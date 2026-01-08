@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지하철 랜덤 데이트 - 우리 오늘 어디서 만나?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fff5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #444;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .heart-icon {
+            font-size: 3rem;
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #777;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .btn-random {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-random:hover {
+            background-color: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .subway-info {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="heart-icon">❤️</div>
+    <h1>오늘 어디서 만날까?</h1>
+    <p>매번 같은 데이트가 지겨우신가요?<br>
+        지하철 노선도 속 숨겨진 보석 같은 역으로<br>
+        당신을 안내해 드릴게요!</p>
+
+    <a th:href="@{/datecourse/random}" class="btn-random">
+        🎲 오늘의 랜덤 역 고르기
+    </a>
+
+    <div class="subway-info">
+        * 전국 지하철 노선도를 기반으로 추천합니다.
+    </div>
+</div>
+
+</body>
+</html>

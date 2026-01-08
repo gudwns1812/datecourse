@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오늘의 데이트 장소 공개! - 지하철 랜덤 데이트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fff5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #444;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            max-width: 450px;
+            width: 90%;
+            /* 결과가 나타나는 애니메이션 */
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #ffe0e0;
+            color: #ff6b6b;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+
+        .result-box {
+            margin: 2rem 0;
+            padding: 2rem;
+            border: 2px dashed #ffb6c1;
+            border-radius: 20px;
+            background-color: #fffafb;
+        }
+
+        .station-name {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .station-suffix {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-retry {
+            background-color: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-retry:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-confirm {
+            background-color: #ff6b6b;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-confirm:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <span class="tag">두근두근 오늘의 운명</span>
+    <h1>우리의 데이트 장소는?</h1>
+
+    <div class="result-box">
+        <span class="station-name" th:text="${randomPlace}">강남</span>
+        <span class="station-suffix">역 근처</span>
+    </div>
+
+    <p style="font-size: 0.9rem; color: #999;">
+        운명이 정해준 이곳에서<br>특별한 추억을 만들어보세요!
+    </p>
+
+    <div class="button-group">
+        <a th:href="@{/datecourse/random}" class="btn btn-retry">
+            🔄 다시 뽑기
+        </a>
+        <a th:href="@{/}" class="btn btn-confirm">
+            좋아요!
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
