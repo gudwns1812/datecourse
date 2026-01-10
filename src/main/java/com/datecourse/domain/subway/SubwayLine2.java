@@ -1,65 +1,45 @@
 package com.datecourse.domain.subway;
 
-import java.util.Arrays;
-import java.util.List;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.datecourse.domain.dto.SubwayDto;
+import com.opencsv.bean.CsvToBeanBuilder;
+import jakarta.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
 public class SubwayLine2 {
-    public static final List<String> LINE2_ALL_WITH_BRANCHES = Arrays.asList(
-            // 본선
-            "시청",
-            "을지로입구",
-            "을지로3가",
-            "을지로4가",
-            "동대문역사문화공원",
-            "신당",
-            "상왕십리",
-            "왕십리",
-            "한양대",
-            "뚝섬",
-            "성수",
-            "건대입구",
-            "구의",
-            "강변",
-            "잠실나루",
-            "잠실",
-            "잠실새내",
-            "종합운동장",
-            "삼성",
-            "선릉",
-            "역삼",
-            "강남",
-            "교대",
-            "서초",
-            "방배",
-            "사당",
-            "낙성대",
-            "서울대입구",
-            "봉천",
-            "신림",
-            "신대방",
-            "구로디지털단지",
-            "대림",
-            "신도림",
-            "문래",
-            "영등포구청",
-            "당산",
-            "합정",
-            "홍대입구",
-            "신촌",
-            "이대",
-            "아현",
-            "충정로",
-            // 성수지선
-            "성수",
-            "용답",
-            "신답",
-            "용두",
-            "신설동",
-            // 신정지선
-            "신도림",
-            "도림천",
-            "양천구청",
-            "신정네거리",
-            "까치산"
-    );
+
+    private final ResourceLoader resourceLoader;
+    private List<SubwayDto> subwayLine2 = new ArrayList<>();
+
+    @PostConstruct
+    public void init() {
+        Resource resource = resourceLoader.getResource(
+                "classpath:국가철도공단_수도권2호선_주소데이터_20241022.csv");
+
+        try (InputStreamReader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
+            subwayLine2 = new CsvToBeanBuilder<SubwayDto>(reader)
+                    .withType(SubwayDto.class)
+                    .build()
+                    .parse();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> getSubwayNames() {
+        return subwayLine2.stream()
+                .map(SubwayDto::getSubwayName)
+                .toList();
+    }
 }
