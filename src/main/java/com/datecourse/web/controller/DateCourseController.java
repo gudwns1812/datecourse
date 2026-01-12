@@ -1,4 +1,4 @@
-package com.datecourse.controller;
+package com.datecourse.web.controller;
 
 import com.datecourse.service.DateCourseService;
 import lombok.RequiredArgsConstructor;
