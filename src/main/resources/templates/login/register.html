@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>datecourse | 회원가입</title>
+    <style>
+        /* 기존 스타일에 password 타입 추가 및 레이아웃 최적화 */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+            padding: 20px 0;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            width: 450px;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* password 타입도 스타일 적용되도록 추가 */
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            box-sizing: border-box;
+            background-color: #fcfcfc;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(255, 107, 107, 0.2);
+        }
+
+        .field-error { border: 2px solid #ff6b6b !important; background-color: #fff0f0; }
+        .error-message { color: #ff6b6b; font-size: 0.85rem; margin-top: 5px; }
+
+        .gender-group {
+            display: flex;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .gender-group label {
+            font-weight: normal;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover { background: #fa5252; }
+
+        .btn-home {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-home:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <script th:if="${loginError}">
+        alert([[${loginError}]]);
+    </script>
+
+    <div class="form-container">
+        <h2 th:text="${pageTitle}">회원가입</h2>
+        <form th:action="@{/datecourse/signup}" th:object="${loginForm}" method="post">
+
+            <div class="form-group">
+                <label>아이디</label>
+                <input type="text" th:field="*{loginId}" th:errorclass="field-error" placeholder="사용할 아이디를 입력하세요">
+                <div class="error-message" th:errors="*{loginId}">아이디 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>이름</label>
+                <input type="text" th:field="*{username}" th:errorclass="field-error" placeholder="실명을 입력하세요">
+                <div class="error-message" th:errors="*{username}">이름 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>비밀번호</label>
+                <input type="password" th:field="*{password}" th:errorclass="field-error" placeholder="비밀번호를 입력하세요">
+                <div class="error-message" th:errors="*{password}">비밀번호 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>비밀번호 확인</label>
+                <input type="password" name="passwordConfirm" placeholder="비밀번호를 한 번 더 입력하세요">
+            </div>
+
+            <div class="form-group">
+                <label>성별</label>
+                <div class="gender-group">
+                    <label><input type="radio" th:field="*{gender}" value="M"> 남</label>
+                    <label><input type="radio" th:field="*{gender}" value="F"> 여</label>
+                </div>
+                <div class="error-message" th:errors="*{gender}">성별 선택 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>생년월일</label>
+                <input type="date" th:field="*{birth}" th:errorclass="field-error">
+                <div class="error-message" th:errors="*{birth}">날짜 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>이메일</label>
+                <input type="email" th:field="*{email}" th:errorclass="field-error" placeholder="example@email.com">
+                <div class="error-message" th:errors="*{email}">이메일 오류</div>
+            </div>
+
+            <div class="form-group">
+                <label>휴대폰 번호</label>
+                <input type="text" th:field="*{phoneNumber}" th:errorclass="field-error" placeholder="010-0000-0000">
+                <div class="error-message" th:errors="*{phoneNumber}">번호 오류</div>
+            </div>
+
+            <button type="submit" class="btn-submit">등록하기</button>
+            <a th:href="@{/}" class="btn-home">홈으로 돌아가기</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

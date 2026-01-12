@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>datecourse | 로그인</title>
+    <style>
+        /* 기본 폰트 설정 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* 데이트의 설렘을 담은 부드러운 핑크 그라데이션 */
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .container {
+            width: 380px;
+            padding: 50px 40px;
+            background: white;
+            border-radius: 30px; /* 더 둥글고 부드럽게 */
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.15);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #ff6b6b; /* datecourse 메인 컬러 */
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        /* 입력창 스타일 */
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 8px 0;
+            border: 2px solid #f8f9fa;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            background-color: white;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.2);
+        }
+
+        /* 로그인 버튼 스타일 */
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        button:hover {
+            background: #fa5252;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* 하단 링크 스타일 */
+        .link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #888;
+        }
+
+        .link a {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 에러 메시지 등을 위한 스타일 (필요시 사용) */
+        .error-msg {
+            color: #e03131;
+            font-size: 0.85em;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            padding-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>로그인</h2>
+    <form th:action th:object="${loginForm}" method="post">
+        <input type="text" th:field="*{loginId}" placeholder="아이디" required>
+        <input type="password" th:field="*{password}" placeholder="비밀번호" required>
+        <button type="submit">오늘의 데이트 시작하기</button>
+    </form>
+    <div class="link">
+        아직 회원이 아니신가요? <a th:href="@{/register}">회원가입</a>
+    </div>
+</div>
+</body>
+</html>
