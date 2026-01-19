@@ -21,4 +21,8 @@ public class Member {
     public boolean isValidIdAndPassword(String loginId, String password) {
         return this.loginId.equals(loginId) && this.password.equals(password);
     }
+
+    public boolean isSameId(String loginId) {
+        return this.loginId.equals(loginId);
+    }
 }

@@ -31,7 +31,10 @@
             margin-bottom: 30px;
         }
 
-        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
 
         label {
             display: block;
@@ -62,8 +65,16 @@
             box-shadow: 0 0 5px rgba(255, 107, 107, 0.2);
         }
 
-        .field-error { border: 2px solid #ff6b6b !important; background-color: #fff0f0; }
-        .error-message { color: #ff6b6b; font-size: 0.85rem; margin-top: 5px; }
+        .field-error {
+            border: 2px solid #ff6b6b !important;
+            background-color: #fff0f0;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
 
         .gender-group {
             display: flex;
@@ -93,7 +104,9 @@
             transition: background 0.3s;
         }
 
-        .btn-submit:hover { background: #fa5252; }
+        .btn-submit:hover {
+            background: #fa5252;
+        }
 
         .btn-home {
             display: block;
@@ -104,18 +117,24 @@
             font-size: 0.9rem;
         }
 
-        .btn-home:hover { text-decoration: underline; }
+        .btn-home:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <script th:if="${loginError}">
-        alert([[${loginError}]]);
-    </script>
+    <th:block th:object="${registerForm}">
+        <script th:inline="javascript" th:if="${#fields.hasGlobalErrors()}">
+            // 여기서는 #fields가 registerForm을 인식합니다.
+            // errors('global') 대신 가장 기본인 globalErrors()를 씁니다.
+            alert([[${#fields.globalErrors()[0]}]]);
+        </script>
+    </th:block>
 
     <div class="form-container">
         <h2 th:text="${pageTitle}">회원가입</h2>
-        <form th:action="@{/datecourse/signup}" th:object="${loginForm}" method="post">
+        <form th:action th:object="${registerForm}" method="post">
 
             <div class="form-group">
                 <label>아이디</label>

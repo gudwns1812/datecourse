@@ -19,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         HttpSession session = request.getSession(false);
 
-        log.info("requestURI={}", requestURI);
+        log.debug("requestURI={}", requestURI);
         if (session == null || session.getAttribute(MEMBER_ID) == null) {
             response.sendRedirect("/datecourse/login?redirectURL=" + requestURI);
             return false;

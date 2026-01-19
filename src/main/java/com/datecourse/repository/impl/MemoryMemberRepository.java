@@ -41,5 +41,9 @@ public class MemoryMemberRepository implements MemberRepository {
         return store.values().stream().toList();
     }
 
-
+    @Override
+    public boolean hasLoginId(String loginId) {
+        return store.values().stream()
+                .anyMatch(member -> member.isSameId(loginId));
+    }
 }

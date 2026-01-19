@@ -14,10 +14,14 @@ public class LoginService {
 
     private final MemberRepository memberRepository;
 
-    public void saveMember(RegisterForm form) {
+    public Member saveMember(RegisterForm form) {
         Member member = form.toMember();
 
-        Member savedMember = memberRepository.save(member);
+        if (memberRepository.hasLoginId(member.getLoginId())) {
+            return null;
+        }
+
+        return memberRepository.save(member);
     }
 
     public Member login(LoginForm form) {
