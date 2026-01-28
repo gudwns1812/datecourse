@@ -1,4 +1,4 @@
-package com.datecourse.web.controller;
+package com.datecourse.web.controller.ssr;
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;

@@ -1,10 +1,10 @@
-package com.datecourse.web.controller;
+package com.datecourse.web.controller.ssr;
 
 import static com.datecourse.web.constrant.SessionConst.MEMBER_ID;
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.service.LoginService;
-import com.datecourse.web.controller.dto.LoginForm;
+import com.datecourse.service.dto.LoginForm;
 import com.datecourse.web.controller.dto.RegisterForm;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -48,7 +48,7 @@ public class LoginController {
         Member loginMember = service.login(dto);
 
         if (loginMember == null) {
-            log.info("로그인에 실패했습니다. id={}", dto.getLoginId());
+            log.info("로그인에 실패했습니다. id={}", dto.loginId());
             result.reject(LOGIN_ERROR_CODE, "아이디 혹은 비밀번호가 일치하지 않습니다.");
             return "loginpage/login";
         }

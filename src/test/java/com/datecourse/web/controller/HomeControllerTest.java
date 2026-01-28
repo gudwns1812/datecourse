@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
 import com.datecourse.web.constrant.SessionConst;
+import com.datecourse.web.controller.ssr.HomeController;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

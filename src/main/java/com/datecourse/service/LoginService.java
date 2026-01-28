@@ -2,7 +2,7 @@ package com.datecourse.service;
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
-import com.datecourse.web.controller.dto.LoginForm;
+import com.datecourse.service.dto.LoginForm;
 import com.datecourse.web.controller.dto.RegisterForm;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class LoginService {
     }
 
     public Member login(LoginForm form) {
-        String loginId = form.getLoginId();
-        String password = form.getPassword();
+        String loginId = form.loginId();
+        String password = form.password();
 
         Optional<Member> loginMember = memberRepository.findByLoginId(loginId, password);
 
