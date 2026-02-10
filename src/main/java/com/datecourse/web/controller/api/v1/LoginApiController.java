@@ -27,11 +27,11 @@ public class LoginApiController {
     private final LoginService service;
 
     @PostMapping("/login")
-    public ApiResponse<Void> login(@RequestBody LoginForm form, HttpSession session) {
+    public ApiResponse<String> login(@RequestBody LoginForm form, HttpSession session) {
         Member member = service.login(form);
 
         session.setAttribute(MEMBER_ID, member.getId());
-        return ApiResponse.success();
+        return ApiResponse.success(member.getUsername());
     }
 
     @GetMapping("/status")
