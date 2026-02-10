@@ -36,6 +36,6 @@ public class ApiControllerAdvice {
     public ApiResponse<Object> unExpectedExceptionHandler(RuntimeException e) {
         log.error("unexpected Error = ", e);
 
-        return ApiResponse.error(null, null);
+        return ApiResponse.error(null, ErrorType.INTERNAL_SERVER_ERROR);
     }
 }
