@@ -6,6 +6,7 @@ import com.datecourse.service.dto.LoginForm;
 import com.datecourse.web.controller.dto.RegisterForm;
 import com.datecourse.web.support.error.CoreException;
 import com.datecourse.web.support.error.ErrorType;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,12 @@ public class LoginService {
 
         return memberRepository
                 .findByLoginId(loginId, password)
-                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, null));
+                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, List.of(loginId, password)));
+    }
+
+    public Member findMemberById(Long memberId) {
+        return memberRepository
+                .findById(memberId)
+                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, memberId));
     }
 }
