@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/datecourse/api")
+@RequestMapping("/v1/auth")
 public class LoginApiController {
 
     private final LoginService service;
