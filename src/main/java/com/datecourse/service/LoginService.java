@@ -4,7 +4,8 @@ import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
 import com.datecourse.service.dto.LoginForm;
 import com.datecourse.web.controller.dto.RegisterForm;
-import java.util.Optional;
+import com.datecourse.web.support.error.CoreException;
+import com.datecourse.web.support.error.ErrorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class LoginService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(RegisterForm form) {
-        Member member = form.toMember();
+        var member = form.toMember();
 
         if (memberRepository.hasLoginId(member.getLoginId())) {
             return null;
@@ -25,11 +26,11 @@ public class LoginService {
     }
 
     public Member login(LoginForm form) {
-        String loginId = form.loginId();
-        String password = form.password();
+        var loginId = form.loginId();
+        var password = form.password();
 
-        Optional<Member> loginMember = memberRepository.findByLoginId(loginId, password);
-
-        return loginMember.orElse(null);
+        return memberRepository
+                .findByLoginId(loginId, password)
+                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, null));
     }
 }
