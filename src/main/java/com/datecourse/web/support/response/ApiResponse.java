@@ -8,7 +8,7 @@ public record ApiResponse<T>(
         T data,
         ErrorMessage error
 ) {
-    public static ApiResponse<Object> success() {
+    public static ApiResponse<Void> success() {
         return new ApiResponse<>(ResultType.SUCCESS, null, null);
     }
 
