@@ -1,7 +1,9 @@
 package com.datecourse.web.interceptor;
 
 import static com.datecourse.web.constrant.SessionConst.MEMBER_ID;
+import static com.datecourse.web.support.error.ErrorType.UNAUTHORIZED_USER;
 
+import com.datecourse.web.support.error.CoreException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -21,8 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         log.debug("requestURI={}", requestURI);
         if (session == null || session.getAttribute(MEMBER_ID) == null) {
-            response.sendRedirect("/datecourse/login?redirectURL=" + requestURI);
-            return false;
+            throw new CoreException(UNAUTHORIZED_USER, null);
         }
 
         return true;
