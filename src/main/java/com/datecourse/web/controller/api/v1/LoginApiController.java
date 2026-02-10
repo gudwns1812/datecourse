@@ -47,7 +47,7 @@ public class LoginApiController {
         return ApiResponse.success(new StatusResponseDto(true, member.getUsername()));
     }
 
-    @PostMapping("v1/auth/logout")
+    @PostMapping("/logout")
     public ApiResponse<Void> logout(HttpServletRequest request) {
         var session = request.getSession(false);
         if (session != null) {
