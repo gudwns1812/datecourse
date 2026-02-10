@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorType {
-    NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, ErrorCode.M001, "회원을 찾을 수 없습니다.", LogLevel.ERROR);
+    NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, ErrorCode.M001, "회원을 찾을 수 없습니다.", LogLevel.ERROR),
+    UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, ErrorCode.A001, "인증되지 않은 회원입니다.", LogLevel.WARN);
 
     private final HttpStatus status;
     private final ErrorCode code;
