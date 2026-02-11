@@ -1,6 +1,6 @@
 package com.datecourse.domain;
 
-public interface PlaceGenerator {
+public interface StationGenerator {
 
     String generate();
 }

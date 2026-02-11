@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: datecourse
+
+---
+#local
+spring:
+  config:
+    activate:
+      on-profile: local
+  messages:
+    basename: messages,errors
+
+logging:
+  level:
+    org:
+      apache:
+        coyote:
+          http11: TRACE
+server:
+  servlet:
+    session:
+      tracking-modes: cookie
+
+---

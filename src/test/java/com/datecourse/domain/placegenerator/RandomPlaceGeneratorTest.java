@@ -1,6 +1,6 @@
 package com.datecourse.domain.placegenerator;
 
-import com.datecourse.domain.PlaceGenerator;
+import com.datecourse.domain.StationGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class RandomPlaceGeneratorTest {
 
     @Autowired
-    PlaceGenerator generator;
+    StationGenerator generator;
 
     @Test
     void generateTest() {

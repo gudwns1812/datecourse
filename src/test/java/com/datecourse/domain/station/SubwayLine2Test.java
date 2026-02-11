@@ -1,4 +1,4 @@
-package com.datecourse.domain.subway;
+package com.datecourse.domain.station;
 
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SubwayLine2Test {
 
     @Autowired
-    SubwayLine2 subwayLine2;
+    StationLine2 subwayLine2;
 
     @Test
     void subwayLine2Test() {

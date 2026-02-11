@@ -4,7 +4,7 @@ import com.opencsv.bean.CsvBindByName;
 import lombok.Data;
 
 @Data
-public class SubwayDto {
+public class StationDto {
 
     @CsvBindByName(column = "철도운영기관명")
     public String organizationName;

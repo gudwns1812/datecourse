@@ -1,8 +1,8 @@
-package com.datecourse.domain.subway;
+package com.datecourse.domain.station;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.datecourse.domain.dto.SubwayDto;
+import com.datecourse.domain.dto.StationDto;
 import com.opencsv.bean.CsvToBeanBuilder;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
@@ -16,10 +16,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SubwayLine2 {
+public class StationLine2 {
 
     private final ResourceLoader resourceLoader;
-    private List<SubwayDto> subwayLine2 = new ArrayList<>();
+    private List<StationDto> subwayLine2 = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -27,8 +27,8 @@ public class SubwayLine2 {
                 "classpath:Line_number_2_address_data_20241022.csv");
 
         try (InputStreamReader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
-            subwayLine2 = new CsvToBeanBuilder<SubwayDto>(reader)
-                    .withType(SubwayDto.class)
+            subwayLine2 = new CsvToBeanBuilder<StationDto>(reader)
+                    .withType(StationDto.class)
                     .build()
                     .parse();
 
@@ -39,7 +39,7 @@ public class SubwayLine2 {
 
     public List<String> getSubwayNames() {
         return subwayLine2.stream()
-                .map(SubwayDto::getSubwayName)
+                .map(StationDto::getSubwayName)
                 .toList();
     }
 }

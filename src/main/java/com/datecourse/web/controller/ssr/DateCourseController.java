@@ -16,7 +16,7 @@ public class DateCourseController {
 
     @GetMapping("/random")
     public String getRandomPlace(Model model) {
-        String randomPlace = service.getRandomPlaceInLine2();
+        String randomPlace = service.getRandomStationInLine2();
         model.addAttribute("randomPlace", randomPlace);
 
         return "random/place";

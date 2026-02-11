@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/random/subway")
-public class RandomSubwayController {
+@RequestMapping("v1/random/station")
+public class RandomStationController {
 
     private final DateCourseService dateCourseService;
 
     @GetMapping
     public ApiResponse<String> getRandomSubway() {
-        String randomSubwayLine2 = dateCourseService.getRandomPlaceInLine2();
+        String randomSubwayLine2 = dateCourseService.getRandomStationInLine2();
 
         return ApiResponse.success(randomSubwayLine2);
     }
