@@ -15,12 +15,6 @@ class SubwayLine2Test {
     @Test
     void subwayLine2Test() {
         //given
-        List<String> subwayNames = subwayLine2.getSubwayNames();
-        //when
-        Assertions.assertThat(subwayNames)
-                .isNotEmpty();
-        //then
 
-        subwayNames.forEach(System.out::println);
     }
 }

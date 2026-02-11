@@ -37,9 +37,16 @@ public class StationLine2 {
         }
     }
 
-    public List<String> getSubwayNames() {
-        return subwayLine2.stream()
-                .map(StationDto::getSubwayName)
-                .toList();
+    public int getSize() {
+        return subwayLine2.size();
+    }
+
+    public Station getStationByOffset(int randomNumber) {
+        StationDto stationDto = subwayLine2.stream()
+                .skip(randomNumber)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("로직에 오류가 있습니다."));
+
+        return new Station(stationDto.lineName, stationDto.subwayName, stationDto.simpleAddress);
     }
 }

@@ -1,8 +1,9 @@
 package com.datecourse.domain.placegenerator;
 
 import com.datecourse.domain.StationGenerator;
+import com.datecourse.domain.station.Station;
 import com.datecourse.domain.station.StationLine2;
-import java.util.List;
+
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,16 +14,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RandomStationGenerator implements StationGenerator {
 
-    private final StationLine2 subwayLine2;
+    private final StationLine2 stationLine2;
 
     @Override
-    public String generate() {
+    public Station generate() {
         Random random = new Random();
 
-        List<String> line2 = subwayLine2.getSubwayNames();
+        int size = stationLine2.getSize();
 
-        int randomNumber = random.nextInt(line2.size());
+        int randomNumber = random.nextInt(size);
         log.info("randomNumber={}", randomNumber);
-        return line2.get(randomNumber);
+        return stationLine2.getStationByOffset(randomNumber);
     }
 }

@@ -1,6 +1,7 @@
 package com.datecourse.service;
 
 import com.datecourse.domain.StationGenerator;
+import com.datecourse.domain.station.Station;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ public class DateCourseService {
 
     private final StationGenerator generator;
 
-    public String getRandomStationInLine2() {
+    public Station getRandomStationInLine2() {
         return generator.generate();
     }
 }
