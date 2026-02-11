@@ -24,7 +24,7 @@ public class SubwayLine2 {
     @PostConstruct
     public void init() {
         Resource resource = resourceLoader.getResource(
-                "classpath:국가철도공단_수도권2호선_주소데이터_20241022.csv");
+                "classpath:Line_number_2_address_data_20241022.csv");
 
         try (InputStreamReader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
             subwayLine2 = new CsvToBeanBuilder<SubwayDto>(reader)

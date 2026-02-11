@@ -1,3 +1,37 @@
-/gradlew text eol=lf
-*.bat text eol=crlf
-*.jar binary
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+
+### Build Tools (Gradle / Maven) ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+target/
+bin/
+
+### IDE (IntelliJ, Eclipse, VS Code) ###
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+### Operating System ###
+.DS_Store
+Thumbs.db
+
+### Spring Boot ###
+HELP.md
+out/
+log/
+*.log
+
+### Personal Settings (중요!) ###
+# 보안이 필요한 설정 파일은 프로젝트 성격에 따라 제외 여부를 결정하세요.
+# application-local.yml
+# application-dev.yml
