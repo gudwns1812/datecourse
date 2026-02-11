@@ -18,7 +18,7 @@ public class RandomStationController {
 
     @GetMapping
     public ApiResponse<StationResponseDto> getRandomSubway() {
-        Station station = dateCourseService.getRandomStationInLine2();
+        Station station = dateCourseService.getRandomStation();
 
         return ApiResponse.success(StationResponseDto.of(station));
     }

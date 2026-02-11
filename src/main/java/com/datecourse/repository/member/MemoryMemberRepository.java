@@ -1,4 +1,4 @@
-package com.datecourse.repository.impl;
+package com.datecourse.repository.member;
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
