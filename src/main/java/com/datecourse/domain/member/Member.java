@@ -1,22 +1,35 @@
 package com.datecourse.domain.member;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
-@With
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Builder
+@Table(
+        name = "members"
+)
 public class Member {
-    private final Long id;
-    private final String username;
-    private final String loginId;
-    private final String password;
-    private final String email;
-    private final String gender;
-    private final String phoneNumber;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String loginId;
+    private String password;
+    private String email;
+    private String gender;
+    private String phoneNumber;
 
     public boolean isValidIdAndPassword(String loginId, String password) {
         return this.loginId.equals(loginId) && this.password.equals(password);

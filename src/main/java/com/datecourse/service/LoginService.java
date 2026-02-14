@@ -19,7 +19,7 @@ public class LoginService {
     public Member saveMember(RegisterForm form) {
         var member = form.toMember();
 
-        if (memberRepository.hasLoginId(member.getLoginId())) {
+        if (memberRepository.existsByLoginId(member.getLoginId())) {
             return null;
         }
 
