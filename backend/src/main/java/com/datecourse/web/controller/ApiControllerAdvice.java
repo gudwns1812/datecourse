@@ -6,6 +6,7 @@ import com.datecourse.support.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class ApiControllerAdvice {
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<Object>> authenticationExceptionHandler(AuthenticationException e) {
+        log.warn("Authentication failed: {}", e.getMessage());
+        return new ResponseEntity<>(ApiResponse.error(null, ErrorType.UNAUTHORIZED_USER), HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(CoreException.class)
     public ResponseEntity<ApiResponse<Object>> coreExceptionHandler(CoreException e) {

@@ -1,0 +1,98 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useAuthStore } from "@/store/useAuthStore";
+import Button from "@/components/common/Button";
+
+export default function Header() {
+  const { isLoggedIn, username, logout } = useAuthStore();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-4 h-[73px]">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary rounded-lg text-white">
+              <span className="material-symbols-outlined text-2xl">subway</span>
+            </div>
+            <h1 className="text-2xl font-extrabold tracking-tight text-primary">어디역?</h1>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3">
+          <div className="p-2 bg-primary rounded-lg text-white">
+            <span className="material-symbols-outlined text-2xl">subway</span>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-primary">
+            어디역?
+          </h1>
+        </Link>
+        
+        <nav className="hidden md:flex items-center gap-8">
+          <Link
+            href="#"
+            className="text-sm font-semibold hover:text-primary transition-colors"
+          >
+            데이트 코스
+          </Link>
+          <Link
+            href="#"
+            className="text-sm font-semibold hover:text-primary transition-colors"
+          >
+            인기 역 순위
+          </Link>
+          <Link
+            href="#"
+            className="text-sm font-semibold hover:text-primary transition-colors"
+          >
+            커뮤니티
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          {isLoggedIn ? (
+            <div className="flex items-center gap-4">
+              <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-xl border border-primary/10">
+                <span className="material-symbols-outlined text-primary text-xl">account_circle</span>
+                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                  {username}님
+                </span>
+              </div>
+              <Button variant="outline" size="sm" onClick={logout}>
+                로그아웃
+              </Button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link href="/login">
+                <Button variant="ghost" size="sm">로그인</Button>
+              </Link>
+              <Link href="/signup">
+                <Button size="sm">회원가입</Button>
+              </Link>
+            </div>
+          )}
+          
+          <button className="p-2.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-all ml-2">
+            <span className="material-symbols-outlined text-[24px]">
+              notifications
+            </span>
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+}

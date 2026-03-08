@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
+import com.datecourse.support.auth.CustomAuthenticationEntryPoint;
 import com.datecourse.support.auth.CustomUserDetails;
 import com.datecourse.support.auth.SecurityConfig;
 import com.datecourse.web.config.WebConfig;
@@ -29,7 +30,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WebMvcTest(HomeController.class)
-@Import({WebConfig.class, SecurityConfig.class})
+@Import({WebConfig.class, SecurityConfig.class, CustomAuthenticationEntryPoint.class})
 class HomeControllerTest {
 
     private MockMvc mockMvc;

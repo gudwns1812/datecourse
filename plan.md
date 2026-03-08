@@ -44,8 +44,10 @@
   - `.gitattributes` (백엔드 전용 설정일 경우)
   - `README.md` (기존 내용은 백엔드용으로 보존)
 
-### 3단계: 프론트엔드 초기화
-- `frontend/` 디렉토리에서 사용자가 원하는 프레임워크(React, Vue 등)를 초기화합니다. (사용자 선택 필요)
+### 3단계: 프론트엔드 초기화 및 구현
+- `frontend/` 디렉토리에서 **Next.js (App Router, TypeScript, Tailwind CSS)**를 초기화하고 구현을 시작합니다.
+- 상세 구현 계획은 [plans/frontend-implementation-v1.md](plans/frontend-implementation-v1.md)를 참조하십시오.
+- `frontend/design/SKILL.md` 및 `frontend/FRONTEND.md` 지침을 엄격히 준수합니다.
 
 ### 4단계: 설정 업데이트
 - 루트 디렉토리에 전체 프로젝트를 아우르는 `.gitignore` 및 `README.md`를 새로 작성하거나 수정합니다.

@@ -24,7 +24,7 @@ public class LoginService {
     @Transactional
     public Member saveMember(RegisterForm form) {
         if (memberRepository.existsByLoginId(form.getLoginId())) {
-            return null;
+            throw new CoreException(ErrorType.INTERNAL_SERVER_ERROR, "이미 존재하는 아이디입니다."); // or a more specific error type
         }
 
         String encryptedPassword = passwordEncoder.encode(form.getPassword());

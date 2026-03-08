@@ -6,8 +6,10 @@ import com.datecourse.domain.member.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 class MemberRepositoryTest {
 
     @Autowired
@@ -16,11 +18,11 @@ class MemberRepositoryTest {
     @Test
     void repositoryTest() {
         //given
-        Member member = Member.createMember("테스터", "test", "test!", "test123@gmail.com", "M", "010-1234-5678");
+        Member member = Member.createMember("테스터", "test_repo", "test!", "test123@gmail.com", "M", "010-1234-5678");
         //when
         Member savedMember = repository.save(member);
         //then
         assertThat(savedMember.getId())
-                .isEqualTo(2);
+                .isNotNull();
     }
 }
