@@ -1,4 +1,4 @@
-package com.datecourse.web.support.error;
+package com.datecourse.support.error;
 
 public enum ErrorCode {
     //authorize

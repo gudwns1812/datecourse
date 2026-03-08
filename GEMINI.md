@@ -17,7 +17,7 @@
 - **모듈 격리**: 백엔드와 프론트엔드는 독립된 모듈로 관리하며, 직접적인 파일 참조를 금지합니다.
 - **계획 우선**: 작업시 plans폴더에 md 파일을 만들고 승인을 받으십시오.
 - **기술 스택**:
-    - Backend: Java 21, Spring Boot 4.0.1, JPA, MySQL, Lombok
+    - Backend: Java 21, Spring Boot 3.4.3, JPA, MySQL, Lombok
     - Frontend: Next.js
 
 ## 3. 커밋 가이드라인

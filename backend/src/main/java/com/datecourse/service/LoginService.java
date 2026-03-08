@@ -3,9 +3,9 @@ package com.datecourse.service;
 import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
 import com.datecourse.service.dto.LoginForm;
+import com.datecourse.support.error.CoreException;
+import com.datecourse.support.error.ErrorType;
 import com.datecourse.web.controller.dto.RegisterForm;
-import com.datecourse.web.support.error.CoreException;
-import com.datecourse.web.support.error.ErrorType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class LoginService {
         var password = form.password();
 
         return memberRepository
-                .findByLoginId(loginId, password)
+                .findByLoginIdAndPassword(loginId, password)
                 .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, List.of(loginId, password)));
     }
 

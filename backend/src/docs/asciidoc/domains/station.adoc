@@ -1,0 +1,15 @@
+= Station API 명세서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 무작위 역 조회 (Random Station)
+무작위로 하나의 역 정보를 반환합니다.
+
+=== HTTP Request
+include::{snippets}/station-random/http-request.adoc[]
+
+=== HTTP Response
+include::{snippets}/station-random/http-response.adoc[]

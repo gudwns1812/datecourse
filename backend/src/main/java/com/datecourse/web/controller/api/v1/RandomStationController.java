@@ -2,8 +2,8 @@ package com.datecourse.web.controller.api.v1;
 
 import com.datecourse.domain.station.Station;
 import com.datecourse.service.DateCourseService;
+import com.datecourse.support.response.ApiResponse;
 import com.datecourse.web.controller.dto.StationResponseDto;
-import com.datecourse.web.support.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

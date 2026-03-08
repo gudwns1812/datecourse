@@ -1,8 +1,8 @@
 package com.datecourse.web.controller;
 
-import com.datecourse.web.support.error.CoreException;
-import com.datecourse.web.support.error.ErrorType;
-import com.datecourse.web.support.response.ApiResponse;
+import com.datecourse.support.error.CoreException;
+import com.datecourse.support.error.ErrorType;
+import com.datecourse.support.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

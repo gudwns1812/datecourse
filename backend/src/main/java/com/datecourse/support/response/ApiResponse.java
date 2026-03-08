@@ -1,7 +1,7 @@
-package com.datecourse.web.support.response;
+package com.datecourse.support.response;
 
-import com.datecourse.web.support.error.ErrorMessage;
-import com.datecourse.web.support.error.ErrorType;
+import com.datecourse.support.error.ErrorMessage;
+import com.datecourse.support.error.ErrorType;
 
 public record ApiResponse<T>(
         ResultType result,

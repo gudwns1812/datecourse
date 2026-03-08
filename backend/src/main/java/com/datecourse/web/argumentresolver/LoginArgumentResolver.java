@@ -1,8 +1,7 @@
 package com.datecourse.web.argumentresolver;
 
-import static com.datecourse.web.constrant.SessionConst.MEMBER_ID;
-
 import com.datecourse.web.annotation.Login;
+import com.datecourse.web.constrant.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.jspecify.annotations.Nullable;
@@ -13,12 +12,13 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         boolean hasLoginAnnotation = parameter.hasParameterAnnotation(Login.class);
-        boolean isLongType = Long.class.isAssignableFrom(parameter.getParameterType());
+        boolean hasMemberType = parameter.getParameterType().isAssignableFrom(Long.class);
 
-        return hasLoginAnnotation && isLongType;
+        return hasLoginAnnotation && hasMemberType;
     }
 
     @Override
@@ -28,11 +28,10 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         HttpSession session = request.getSession(false);
-
-        if (session == null || session.getAttribute(MEMBER_ID) == null) {
+        if (session == null) {
             return null;
         }
 
-        return session.getAttribute(MEMBER_ID);
+        return session.getAttribute(SessionConst.MEMBER_ID);
     }
 }

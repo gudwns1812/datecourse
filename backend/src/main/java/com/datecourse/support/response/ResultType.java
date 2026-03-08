@@ -1,4 +1,4 @@
-package com.datecourse.web.support.response;
+package com.datecourse.support.response;
 
 public enum ResultType {
     SUCCESS,

@@ -1,0 +1,30 @@
+= Member API 명세서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 회원 가입 (Signup)
+회원가입 요청을 처리합니다.
+
+=== HTTP Request
+include::{snippets}/member-signup/http-request.adoc[]
+
+=== Request Fields
+include::{snippets}/member-signup/request-fields.adoc[]
+
+=== HTTP Response
+include::{snippets}/member-signup/http-response.adoc[]
+
+== 로그인 (Login)
+로그인 요청을 처리합니다.
+
+=== HTTP Request
+include::{snippets}/member-login/http-request.adoc[]
+
+=== Request Fields
+include::{snippets}/member-login/request-fields.adoc[]
+
+=== HTTP Response
+include::{snippets}/member-login/http-response.adoc[]

@@ -1,7 +1,8 @@
 package com.datecourse.domain.station;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,13 +14,9 @@ public class RandomStationGenerator implements StationGenerator {
 
     @Override
     public Station generate(List<Station> stations) {
-        Random random = new Random();
-        int size = stations.size();
-        int randomOffset = random.nextInt(size);
+        var copy = new ArrayList<>(stations);
 
-        return stations.stream()
-                .skip(randomOffset)
-                .findFirst()
-                .orElseThrow();
+        Collections.shuffle(copy);
+        return copy.getFirst();
     }
 }

@@ -5,9 +5,10 @@ import static com.datecourse.web.constrant.SessionConst.MEMBER_ID;
 import com.datecourse.domain.member.Member;
 import com.datecourse.service.LoginService;
 import com.datecourse.service.dto.LoginForm;
+import com.datecourse.support.response.ApiResponse;
 import com.datecourse.web.annotation.Login;
+import com.datecourse.web.controller.dto.RegisterForm;
 import com.datecourse.web.controller.dto.StatusResponseDto;
-import com.datecourse.web.support.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginApiController {
 
     private final LoginService service;
+
+    @PostMapping("/signup")
+    public ApiResponse<Long> signup(@RequestBody RegisterForm form) {
+        Member member = service.saveMember(form);
+        return ApiResponse.success(member.getId());
+    }
 
     @PostMapping("/login")
     public ApiResponse<String> login(@RequestBody LoginForm form, HttpSession session) {
