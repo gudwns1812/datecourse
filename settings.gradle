@@ -1,1 +1,3 @@
 rootProject.name = 'datecourse'
+include 'backend'
+include 'frontend'

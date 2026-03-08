@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>지하철 랜덤 데이트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 공통 스타일 */
+        body {
+            margin: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fff5f5;
+            color: #444;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px 40px;
+            gap: 15px;
+        }
+
+        .btn-sub {
+            text-decoration: none;
+            color: #ff6b6b;
+            font-weight: bold;
+            border: 2px solid #ff6b6b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-sub:hover {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .heart-icon {
+            font-size: 3rem;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .btn-main {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .intro-text {
+            line-height: 1.8;
+            color: #666;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<nav class="nav">
+    <a th:href="@{/datecourse/login}" class="btn-sub">로그인</a>
+    <a th:href="@{/datecourse/signup}" class="btn-sub">회원가입</a>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <div class="heart-icon">❤️</div>
+        <h1>오늘 어디서 만날까?</h1>
+        <div class="intro-text">
+            "매일 가던 카페, 익숙한 거리... 지겨우신가요?"<br>
+            <strong>지하철 랜덤 데이트</strong>는 여러분의 데이트에 설렘을 더해드립니다.<br>
+            버튼 하나로 정해지는 운명의 장소로 떠나보세요!
+        </div>
+        <a th:href="@{/datecourse/random}" class="btn-main">🎲 오늘의 랜덤 역 고르기</a>
+    </div>
+</div>
+</body>
+</html>
