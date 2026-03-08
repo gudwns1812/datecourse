@@ -34,7 +34,7 @@ public class StationInit {
                     .parse();
 
             for (StationDto response : stationResponses) {
-                repository.save(new Station(response.lineName, response.subwayName, response.simpleAddress));
+                repository.save(Station.of(response.lineName, response.subwayName, response.simpleAddress));
             }
 
         } catch (IOException e) {

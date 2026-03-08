@@ -17,7 +17,7 @@ public class LoginService {
     private final MemberRepository memberRepository;
 
     public Member saveMember(RegisterForm form) {
-        var member = form.toMember();
+        var member = form.toEntity();
 
         if (memberRepository.existsByLoginId(member.getLoginId())) {
             return null;

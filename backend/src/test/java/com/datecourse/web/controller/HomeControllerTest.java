@@ -31,14 +31,7 @@ class HomeControllerTest {
     @Test
     void argumentResolverTest() throws Exception {
         //given
-        Member memberTest = Member.builder()
-                .loginId("test")
-                .password("test!")
-                .email("test123@gmail.com")
-                .gender("M")
-                .username("테스터")
-                .phoneNumber("010-1234-5678")
-                .build();
+        Member memberTest = Member.createMember("테스터", "test", "test!", "test123@gmail.com", "M", "010-1234-5678");
 
         given(memberRepository.findById(1L)).willReturn(Optional.of(memberTest));
         //when

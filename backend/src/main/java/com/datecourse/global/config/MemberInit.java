@@ -14,15 +14,7 @@ public class MemberInit {
 
     @PostConstruct
     public void init() {
-        Member memberTest = Member.builder()
-                .loginId("test")
-                .password("test!")
-                .email("test123@gmail.com")
-                .gender("M")
-                .username("테스터")
-                .phoneNumber("010-1234-5678")
-                .build();
-
+        Member memberTest = Member.createMember("테스터", "test", "test!", "test123@gmail.com", "M", "010-1234-5678");
         repository.save(memberTest);
     }
 }

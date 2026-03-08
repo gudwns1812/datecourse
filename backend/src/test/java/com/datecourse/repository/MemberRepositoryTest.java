@@ -16,8 +16,7 @@ class MemberRepositoryTest {
     @Test
     void repositoryTest() {
         //given
-        Member member = Member.builder()
-                .build();
+        Member member = Member.createMember("테스터", "test", "test!", "test123@gmail.com", "M", "010-1234-5678");
         //when
         Member savedMember = repository.save(member);
         //then

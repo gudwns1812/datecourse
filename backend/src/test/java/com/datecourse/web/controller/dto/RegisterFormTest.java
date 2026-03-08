@@ -11,7 +11,7 @@ class RegisterFormTest {
         //given
         RegisterForm form = new RegisterForm();
         //when
-        Member member = form.toMember();
+        Member member = form.toEntity();
         //then
         Assertions.assertThat(member.getId())
                 .isNull();
