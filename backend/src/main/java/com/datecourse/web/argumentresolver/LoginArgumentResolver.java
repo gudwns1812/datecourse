@@ -1,11 +1,12 @@
 package com.datecourse.web.argumentresolver;
 
+import com.datecourse.support.auth.CustomUserDetails;
 import com.datecourse.web.annotation.Login;
-import com.datecourse.web.constrant.SessionConst;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import java.security.Principal;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -26,12 +27,19 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
                                             NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory)
             throws Exception {
 
-        HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        HttpSession session = request.getSession(false);
-        if (session == null) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            Principal principal = webRequest.getUserPrincipal();
+            if (principal instanceof Authentication auth) {
+                authentication = auth;
+            }
+        }
+
+        if (authentication == null || !(authentication.getPrincipal() instanceof CustomUserDetails userDetails)) {
             return null;
         }
 
-        return session.getAttribute(SessionConst.MEMBER_ID);
+        return userDetails.getMember().getId();
     }
 }

@@ -4,6 +4,7 @@ import com.datecourse.domain.member.Member;
 import com.datecourse.repository.MemberRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Component;
 public class MemberInit {
 
     private final MemberRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
-        Member memberTest = Member.createMember("테스터", "test", "test!", "test123@gmail.com", "M", "010-1234-5678");
+        Member memberTest = Member.createMember("테스터", "test", passwordEncoder.encode("test!"), "test123@gmail.com", "M", "010-1234-5678");
         repository.save(memberTest);
     }
 }

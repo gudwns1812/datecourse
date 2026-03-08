@@ -24,6 +24,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
 
 logging:
   level:
@@ -51,3 +55,7 @@ spring:
     hibernate:
       ddl-auto: create-drop # 테스트 종료 후 DB 초기화
     show-sql: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always

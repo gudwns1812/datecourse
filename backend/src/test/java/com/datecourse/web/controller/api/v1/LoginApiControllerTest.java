@@ -13,16 +13,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.datecourse.domain.member.Member;
 import com.datecourse.service.LoginService;
 import com.datecourse.service.dto.LoginForm;
+import com.datecourse.support.auth.CustomUserDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,6 +45,9 @@ class LoginApiControllerTest {
     @MockitoBean
     private LoginService loginService;
 
+    @MockitoBean
+    private AuthenticationManager authenticationManager;
+
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -53,7 +61,7 @@ class LoginApiControllerTest {
         String json = "{\"username\":\"테스터\",\"loginId\":\"test\",\"password\":\"test!\",\"email\":\"test@test.com\",\"gender\":\"M\",\"phoneNumber\":\"010-1234-5678\"}";
 
         Member member = Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678");
-        // ID 필드를 위해 Reflection 또는 빌더를 통해 Mock용 객체 생성 필요할 수 있으나 현재는 saveMember의 응답을 모킹함
+        ReflectionTestUtils.setField(member, "id", 1L);
         given(loginService.saveMember(any())).willReturn(member);
 
         //when & then
@@ -84,7 +92,13 @@ class LoginApiControllerTest {
         LoginForm form = new LoginForm("test", "test!");
         String json = objectMapper.writeValueAsString(form);
 
-        given(loginService.login(any())).willReturn(Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678"));
+        Member member = Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678");
+        ReflectionTestUtils.setField(member, "id", 1L);
+
+        CustomUserDetails userDetails = new CustomUserDetails(member);
+        Authentication authentication = Mockito.mock(Authentication.class);
+        given(authentication.getPrincipal()).willReturn(userDetails);
+        given(authenticationManager.authenticate(any())).willReturn(authentication);
 
         //when & then
         mockMvc.perform(post("/v1/auth/login")

@@ -6,22 +6,37 @@ import com.datecourse.service.dto.LoginForm;
 import com.datecourse.support.error.CoreException;
 import com.datecourse.support.error.ErrorType;
 import com.datecourse.web.controller.dto.RegisterForm;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LoginService {
 
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public Member saveMember(RegisterForm form) {
-        var member = form.toEntity();
-
-        if (memberRepository.existsByLoginId(member.getLoginId())) {
+        if (memberRepository.existsByLoginId(form.getLoginId())) {
             return null;
         }
+
+        String encryptedPassword = passwordEncoder.encode(form.getPassword());
+        
+        Member member = Member.createMember(
+                form.getUsername(),
+                form.getLoginId(),
+                encryptedPassword,
+                form.getEmail(),
+                form.getGender(),
+                form.getPhoneNumber()
+        );
 
         return memberRepository.save(member);
     }
@@ -30,9 +45,14 @@ public class LoginService {
         var loginId = form.loginId();
         var password = form.password();
 
-        return memberRepository
-                .findByLoginIdAndPassword(loginId, password)
-                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, List.of(loginId, password)));
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new CoreException(ErrorType.NOT_FOUND_MEMBER, List.of(loginId)));
+
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new CoreException(ErrorType.NOT_FOUND_MEMBER, List.of(loginId));
+        }
+
+        return member;
     }
 
     public Member findMemberById(Long memberId) {
