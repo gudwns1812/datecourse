@@ -7,7 +7,6 @@ export interface SignupRequest {
   email: string;
   gender: string;
   phoneNumber: string;
-  providerId?: string;
 }
 
 export interface LoginRequest {

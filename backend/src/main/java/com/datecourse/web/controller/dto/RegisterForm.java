@@ -45,7 +45,10 @@ public class RegisterForm {
             message = "올바른 휴대폰 번호 형식이어야 합니다. (예: 010-1234-5678)")
     private String phoneNumber;
 
+    private String providerId;
+
+
     public Member toEntity() {
-        return Member.createMember(username, loginId, password, email, gender, phoneNumber);
+        return Member.createMember(username, loginId, password, email, gender, phoneNumber, providerId);
     }
 }

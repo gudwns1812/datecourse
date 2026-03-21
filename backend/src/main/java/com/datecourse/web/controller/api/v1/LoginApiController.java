@@ -8,6 +8,8 @@ import com.datecourse.support.response.ApiResponse;
 import com.datecourse.web.controller.dto.RegisterForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +27,17 @@ public class LoginApiController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ApiResponse<Long> signup(@RequestBody RegisterForm form) {
+    public ApiResponse<Long> signup(@RequestBody RegisterForm form, @AuthenticationPrincipal OAuth2User oAuth2User) {
+        if (oAuth2User == null) {
+            Member member = loginService.saveMember(form);
+            return ApiResponse.success(member.getId());
+        }
+
+        String providerId = oAuth2User.getAttribute("id").toString();
+        form.setProviderId(providerId);
+
         Member member = loginService.saveMember(form);
+        authService.upgradeAuth(member);
         return ApiResponse.success(member.getId());
     }
 

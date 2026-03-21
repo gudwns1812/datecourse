@@ -29,7 +29,7 @@ public class KakaoOAuth2UserService extends DefaultOAuth2UserService {
                 .orElseGet(Member::createDefaultMember);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(member.getRole())),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRole().name())),
                 user.getAttributes(),
                 USER_ID);
     }

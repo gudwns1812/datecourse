@@ -1,5 +1,6 @@
 package com.datecourse.domain.member;
 
+import com.datecourse.support.auth.USER_ROLE;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,17 +29,9 @@ public class Member {
     private String email;
     private String gender;
     private String phoneNumber;
-    private String role;
+    private USER_ROLE role;
     private String providerId;
-
-    /**
-     * 일반 회원 가입을 위한 정적 팩토리 메서드 (providerId 없음)
-     */
-    public static Member createMember(String username, String loginId, String password, String email, String gender,
-                                      String phoneNumber) {
-        return createMember(username, loginId, password, email, gender, phoneNumber, null);
-    }
-
+    
     /**
      * OAuth2 회원 가입을 위한 정적 팩토리 메서드 (providerId 포함)
      */
@@ -52,13 +45,13 @@ public class Member {
                 .gender(gender)
                 .phoneNumber(phoneNumber)
                 .providerId(providerId)
-                .role("ROLE_USER")
+                .role(USER_ROLE.ROLE_USER)
                 .build();
     }
 
     public static Member createDefaultMember() {
         return Member.builder()
-                .role("ROLE_GUEST")
+                .role(USER_ROLE.ROLE_GUEST)
                 .build();
     }
 }

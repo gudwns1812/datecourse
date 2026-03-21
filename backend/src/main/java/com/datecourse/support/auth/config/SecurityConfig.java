@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/v1/auth/login", "/v1/auth/signup").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/*.ico", "/error").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().hasRole("USER")
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)

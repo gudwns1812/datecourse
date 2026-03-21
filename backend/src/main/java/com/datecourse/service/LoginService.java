@@ -33,7 +33,8 @@ public class LoginService {
                 encryptedPassword,
                 form.getEmail(),
                 form.getGender(),
-                form.getPhoneNumber()
+                form.getPhoneNumber(),
+                form.getProviderId()
         );
 
         return memberRepository.save(member);
