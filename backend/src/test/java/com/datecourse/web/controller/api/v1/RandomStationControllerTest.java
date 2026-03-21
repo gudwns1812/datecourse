@@ -6,13 +6,14 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.datecourse.domain.member.Member;
 import com.datecourse.domain.station.Station;
 import com.datecourse.service.DateCourseService;
-import com.datecourse.support.auth.CustomUserDetails;
+import com.datecourse.support.auth.MemberDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,12 +45,13 @@ class RandomStationControllerTest {
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation))
+                .apply(springSecurity())
                 .build();
 
         Member member = Member.createMember("테스터", "test", "password", "test@test.com", "M", "010-1234-5678");
         ReflectionTestUtils.setField(member, "id", 1L); // ID 할당
 
-        CustomUserDetails userDetails = new CustomUserDetails(member);
+        MemberDetails userDetails = new MemberDetails(member);
         auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
@@ -60,7 +62,7 @@ class RandomStationControllerTest {
         given(dateCourseService.getRandomStation()).willReturn(station);
 
         //when & then
-        mockMvc.perform(get("/v1/stations/random")
+        mockMvc.perform(get("/api/v1/stations/random")
                         .with(authentication(auth))) // Security 인증 객체 주입
                 .andExpect(status().isOk())
                 .andDo(document("station-random",

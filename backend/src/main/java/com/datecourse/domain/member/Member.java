@@ -28,11 +28,22 @@ public class Member {
     private String email;
     private String gender;
     private String phoneNumber;
+    private String role;
+    private String providerId;
 
     /**
-     * 회원 가입을 위한 정적 팩토리 메서드
+     * 일반 회원 가입을 위한 정적 팩토리 메서드 (providerId 없음)
      */
-    public static Member createMember(String username, String loginId, String password, String email, String gender, String phoneNumber) {
+    public static Member createMember(String username, String loginId, String password, String email, String gender,
+                                      String phoneNumber) {
+        return createMember(username, loginId, password, email, gender, phoneNumber, null);
+    }
+
+    /**
+     * OAuth2 회원 가입을 위한 정적 팩토리 메서드 (providerId 포함)
+     */
+    public static Member createMember(String username, String loginId, String password, String email, String gender,
+                                      String phoneNumber, String providerId) {
         return Member.builder()
                 .username(username)
                 .loginId(loginId)
@@ -40,14 +51,14 @@ public class Member {
                 .email(email)
                 .gender(gender)
                 .phoneNumber(phoneNumber)
+                .providerId(providerId)
+                .role("ROLE_USER")
                 .build();
     }
 
-    public boolean isValidIdAndPassword(String loginId, String password) {
-        return this.loginId.equals(loginId) && this.password.equals(password);
-    }
-
-    public boolean isSameId(String loginId) {
-        return this.loginId.equals(loginId);
+    public static Member createDefaultMember() {
+        return Member.builder()
+                .role("ROLE_GUEST")
+                .build();
     }
 }

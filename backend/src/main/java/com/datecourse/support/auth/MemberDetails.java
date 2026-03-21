@@ -8,12 +8,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class MemberDetails implements UserDetails {
 
-    private final Member member;
+    private final Long id;
+    private final String loginId;
+    private final String password;
+    private final String username;
 
-    public CustomUserDetails(Member member) {
-        this.member = member;
+    public MemberDetails(Member member) {
+        this.id = member.getId();
+        this.loginId = member.getLoginId();
+        this.password = member.getPassword();
+        this.username = member.getUsername();
     }
 
     @Override
@@ -23,12 +29,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return member.getLoginId(); // Spring Security의 username은 식별자인 loginId 사용
+        return username; // Spring Security의 username은 식별자인 loginId 사용
     }
 
     @Override

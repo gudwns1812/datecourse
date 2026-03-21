@@ -1,4 +1,4 @@
-package com.datecourse.global.config;
+package com.datecourse.support.init;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

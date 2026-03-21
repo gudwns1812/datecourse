@@ -13,7 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.datecourse.domain.member.Member;
 import com.datecourse.service.LoginService;
 import com.datecourse.service.dto.LoginForm;
-import com.datecourse.support.auth.CustomUserDetails;
+import com.datecourse.support.auth.AuthService;
+import com.datecourse.support.auth.MemberDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,9 @@ class LoginApiControllerTest {
     private LoginService loginService;
 
     @MockitoBean
+    private AuthService authService;
+
+    @MockitoBean
     private AuthenticationManager authenticationManager;
 
     @BeforeEach
@@ -65,7 +69,7 @@ class LoginApiControllerTest {
         given(loginService.saveMember(any())).willReturn(member);
 
         //when & then
-        mockMvc.perform(post("/v1/auth/signup")
+        mockMvc.perform(post("/api/v1/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -95,13 +99,13 @@ class LoginApiControllerTest {
         Member member = Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678");
         ReflectionTestUtils.setField(member, "id", 1L);
 
-        CustomUserDetails userDetails = new CustomUserDetails(member);
+        MemberDetails userDetails = new MemberDetails(member);
         Authentication authentication = Mockito.mock(Authentication.class);
         given(authentication.getPrincipal()).willReturn(userDetails);
         given(authenticationManager.authenticate(any())).willReturn(authentication);
 
         //when & then
-        mockMvc.perform(post("/v1/auth/login")
+        mockMvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
