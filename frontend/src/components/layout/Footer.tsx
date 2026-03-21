@@ -7,11 +7,11 @@ export default function Footer() {
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-primary">subway</span>
           <span className="font-bold text-slate-700 dark:text-slate-300">
-            어디역? (Where Station)
+            DateCourse
           </span>
         </div>
         <p className="text-sm text-slate-500">
-          © 2024 어디역. Seoul Metro Random Dating Spot Service.
+          © 2024 DateCourse. Seoul Metro Random Dating Spot Service.
         </p>
         <div className="flex gap-6">
           <Link

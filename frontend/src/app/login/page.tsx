@@ -90,6 +90,25 @@ export default function LoginPage() {
           </Button>
         </form>
 
+        <div className="relative my-8">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200 dark:border-slate-800"></div>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white dark:bg-slate-900 px-4 text-slate-500 font-bold">또는 소셜 로그인</span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8080'}/oauth2/authorization/kakao`}
+          className="w-full flex items-center justify-center gap-3 bg-[#FEE500] hover:bg-[#FDE000] text-[#191919] font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98]"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z" fill="currentColor"/>
+          </svg>
+          카카오로 로그인하기
+        </button>
+
         <div className="mt-10 text-center text-sm">
           <p className="text-slate-500 dark:text-slate-400">
             아직 회원이 아니신가요?{" "}

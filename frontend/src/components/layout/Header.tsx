@@ -22,7 +22,7 @@ export default function Header() {
             <div className="p-2 bg-primary rounded-lg text-white">
               <span className="material-symbols-outlined text-2xl">subway</span>
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-primary">어디역?</h1>
+            <h1 className="text-2xl font-extrabold tracking-tight text-primary">DateCourse</h1>
           </div>
         </div>
       </header>
@@ -37,7 +37,7 @@ export default function Header() {
             <span className="material-symbols-outlined text-2xl">subway</span>
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight text-primary">
-            어디역?
+            DateCourse
           </h1>
         </Link>
         

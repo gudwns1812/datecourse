@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import { authService } from "@/services/auth";
 
-export default function SignupPage() {
+function SignupForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const providerId = searchParams.get("providerId");
+
   const [formData, setFormData] = useState({
     username: "",
     loginId: "",
@@ -15,20 +19,60 @@ export default function SignupPage() {
     email: "",
     gender: "M",
     phoneNumber: "",
+    providerId: providerId || undefined,
   });
   
+  // 중복 확인 상태: 'idle' (확인 전) | 'checking' (확인 중) | 'available' (사용 가능) | 'taken' (중복됨)
+  const [idStatus, setIdStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  const router = useRouter();
+
+  useEffect(() => {
+    if (providerId) {
+      setFormData(prev => ({ ...prev, providerId }));
+    }
+  }, [providerId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // 아이디 필드가 변경되면 중복 확인 상태 초기화
+    if (name === 'loginId') {
+      setIdStatus('idle');
+    }
+  };
+
+  const handleCheckId = async () => {
+    if (!formData.loginId) {
+      alert("아이디를 먼저 입력해주세요.");
+      return;
+    }
+    
+    setIdStatus('checking');
+    try {
+      const response = await authService.checkId(formData.loginId);
+      if (response.result === "SUCCESS") {
+        // data가 true면 사용 가능, false면 중복됨
+        setIdStatus(response.data ? 'taken' : 'available');
+      } else {
+        setIdStatus('idle');
+        setError("중복 확인 중 오류가 발생했습니다.");
+      }
+    } catch (err) {
+      setIdStatus('idle');
+      setError("서버와의 통신에 실패했습니다.");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (idStatus !== 'available') {
+      alert("아이디 중복 확인이 필요합니다.");
+      return;
+    }
+
     setError(null);
     setIsLoading(true);
 
@@ -38,7 +82,7 @@ export default function SignupPage() {
         alert("회원가입이 완료되었습니다. 로그인해주세요!");
         router.push("/login");
       } else {
-        setError("이미 사용 중인 아이디이거나 입력 정보가 올바르지 않습니다.");
+        setError("회원가입 정보가 올바르지 않습니다.");
       }
     } catch (err) {
       setError("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -54,9 +98,26 @@ export default function SignupPage() {
           <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-2xl text-primary mb-4">
             <span className="material-symbols-outlined text-3xl">person_add</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">회원가입</h1>
-          <p className="text-slate-500 dark:text-slate-400">어디역?의 회원이 되어 서울 곳곳을 탐험하세요.</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">
+            {formData.providerId ? "추가 정보 입력" : "회원가입"}
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400">
+            {formData.providerId 
+              ? "카카오 계정 연동을 위해 몇 가지 정보가 더 필요해요." 
+              : "어디역?의 회원이 되어 서울 곳곳을 탐험하세요."}
+          </p>
         </div>
+
+        {formData.providerId && (
+          <div className="mb-8 flex items-center justify-center gap-2 py-2 px-4 bg-[#FEE500]/10 rounded-full border border-[#FEE500]/20 w-fit mx-auto">
+            <div className="w-5 h-5 bg-[#FEE500] rounded-full flex items-center justify-center">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z" fill="#191919"/>
+              </svg>
+            </div>
+            <span className="text-xs font-bold text-slate-600 dark:text-slate-300">카카오 계정이 연동되었습니다</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -72,13 +133,30 @@ export default function SignupPage() {
             </div>
             <div className="space-y-2">
               <label className="text-sm font-bold text-slate-700 dark:text-slate-300 ml-1">아이디</label>
-              <Input
-                name="loginId"
-                placeholder="사용할 아이디"
-                value={formData.loginId}
-                onChange={handleChange}
-                required
-              />
+              <div className="flex gap-2">
+                <Input
+                  name="loginId"
+                  placeholder="사용할 아이디"
+                  value={formData.loginId}
+                  onChange={handleChange}
+                  required
+                  className="flex-1"
+                />
+                <button
+                  type="button"
+                  onClick={handleCheckId}
+                  disabled={idStatus === 'checking' || !formData.loginId}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm font-bold rounded-xl transition-all disabled:opacity-50 whitespace-nowrap"
+                >
+                  {idStatus === 'checking' ? '확인 중...' : '중복 확인'}
+                </button>
+              </div>
+              {idStatus === 'available' && (
+                <p className="text-xs font-bold text-green-500 ml-1 italic animate-in fade-in slide-in-from-left-1">사용 가능한 아이디입니다.</p>
+              )}
+              {idStatus === 'taken' && (
+                <p className="text-xs font-bold text-primary ml-1 italic animate-in fade-in slide-in-from-left-1">이미 사용 중인 아이디입니다.</p>
+              )}
             </div>
           </div>
 
@@ -158,7 +236,7 @@ export default function SignupPage() {
             type="submit"
             size="lg"
             className="w-full mt-6"
-            disabled={isLoading}
+            disabled={isLoading || idStatus !== 'available'}
           >
             {isLoading ? "처리 중..." : "가입하기"}
           </Button>
@@ -174,5 +252,17 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 flex items-center justify-center">
+        <div className="animate-pulse text-primary font-bold text-lg">페이지를 불러오는 중...</div>
+      </div>
+    }>
+      <SignupForm />
+    </Suspense>
   );
 }

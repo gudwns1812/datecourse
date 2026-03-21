@@ -11,12 +11,12 @@
 ## 2. API 연동 상세 (backend-api 참조)
 
 ### 2.1 인증 (Member API)
-- **POST `/v1/auth/signup`**: 회원가입. 성공 시 `/login`으로 이동.
-- **POST `/v1/auth/login`**: 로그인. 성공 시 세션 유지 및 메인(`/`)으로 이동.
+- **POST `api/v1/auth/signup`**: 회원가입. 성공 시 `/login`으로 이동.
+- **POST `api/v1/auth/login`**: 로그인. 성공 시 세션 유지 및 메인(`/`)으로 이동.
 - **상태 관리**: 로그인 여부를 전역 상태(Zustand 또는 Context)로 관리하여 헤더 및 버튼 UI 변경.
 
 ### 2.2 역 정보 (Station API)
-- **GET `/v1/stations/random`**: 무작위 역 조회.
+- **GET `api/v1/stations/random`**: 무작위 역 조회.
   - **응답 데이터 구조**: `{ lineNumbers: string[], stationName: string, stationAddress: string }`
   - **검증**: 인증된 세션이 없을 경우 `/login`으로 리다이렉트 처리.
 

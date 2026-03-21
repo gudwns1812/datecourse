@@ -9,7 +9,7 @@ export interface StationData {
 
 export const stationService = {
   getRandomStation: async () => {
-    const response = await api.get<ApiResponse<StationData>>("/v1/stations/random");
+    const response = await api.get<ApiResponse<StationData>>("api/v1/stations/random");
     return response.data;
   },
 };
