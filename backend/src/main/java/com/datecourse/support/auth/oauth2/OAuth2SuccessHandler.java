@@ -1,6 +1,6 @@
 package com.datecourse.support.auth.oauth2;
 
-import static com.datecourse.support.auth.USER_ROLE.ROLE_GUEST;
+import static com.datecourse.support.auth.UserRole.ROLE_GUEST;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

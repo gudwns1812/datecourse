@@ -37,6 +37,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.session:spring-session-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.hibernate:hibernate-spatial:6.4.4.Final'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -49,9 +50,9 @@ dependencies {
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    runtimeOnly 'org.postgresql:postgresql'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'com.h2database:h2'
     runtimeOnly 'com.h2database:h2'
 
@@ -82,3 +83,5 @@ build {
 test {
     jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}", '-Xshare:off'
 }
+
+tasks.register("prepareKotlinBuildScriptModel") {}

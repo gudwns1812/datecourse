@@ -2,18 +2,18 @@ package com.datecourse.web.controller.dto;
 
 import com.datecourse.domain.station.Station;
 
-import java.util.List;
-
 public record StationResponseDto(
-        List<String> lineNumbers,
+        String line,
         String stationName,
-        String stationAddress
+        Double longitude,
+        Double latitude
 ) {
     public static StationResponseDto of(Station station) {
         return new StationResponseDto(
-                station.getLines(),
+                station.getLine(),
                 station.getStationName(),
-                station.getAddress().getAddressWithoutDetail()
+                station.getLongitude(),
+                station.getLatitude()
         );
     }
 }

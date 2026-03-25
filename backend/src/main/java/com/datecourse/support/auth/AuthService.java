@@ -1,6 +1,5 @@
 package com.datecourse.support.auth;
 
-import com.datecourse.domain.member.Member;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class AuthService {
         return userDetails.getUsername();
     }
 
-    public void upgradeAuth(Member member) {
+    public void upgradeAuth() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());

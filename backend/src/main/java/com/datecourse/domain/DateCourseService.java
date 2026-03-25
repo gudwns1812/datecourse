@@ -1,8 +1,7 @@
-package com.datecourse.service;
+package com.datecourse.domain;
 
 import com.datecourse.domain.station.Station;
 import com.datecourse.domain.station.StationGenerator;
-import com.datecourse.storage.repository.StationMemoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DateCourseService {
 
-    private final StationMemoryRepository stationRepository;
+    private final SubwayStationReader subwayStationReader;
     private final StationGenerator stationGenerator;
 
     public Station getRandomStation() {
-        List<Station> stations = stationRepository.findAll();
+        List<Station> stations = subwayStationReader.readAll();
         return stationGenerator.generate(stations);
     }
 }

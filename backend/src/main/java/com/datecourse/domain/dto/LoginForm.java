@@ -1,4 +1,4 @@
-package com.datecourse.service.dto;
+package com.datecourse.domain.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 

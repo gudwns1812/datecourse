@@ -1,5 +1,5 @@
 package com.datecourse.support.auth;
 
-public enum USER_ROLE {
+public enum UserRole {
     ROLE_GUEST, ROLE_USER
 }

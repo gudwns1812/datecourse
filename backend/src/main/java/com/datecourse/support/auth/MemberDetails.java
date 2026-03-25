@@ -1,6 +1,6 @@
 package com.datecourse.support.auth;
 
-import com.datecourse.domain.member.Member;
+import com.datecourse.storage.entity.Member;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.Getter;

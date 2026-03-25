@@ -1,6 +1,8 @@
 package com.datecourse.web.controller.dto;
 
-import com.datecourse.domain.member.Member;
+import com.datecourse.storage.constant.MemberGender;
+import com.datecourse.storage.entity.Member;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,11 +32,11 @@ public class RegisterForm {
     private String password;
 
     @NotNull(message = "성별을 클릭해주세요")
-    @Pattern(regexp = "[MF]")
-    private String gender;
+    private MemberGender gender;
 
     @NotNull(message = "생년월일을 선택해주세요.")
     @Past(message = "생년월일은 과거 날짜여야 합니다.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birth;
 
     @Email

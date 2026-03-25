@@ -1,7 +1,7 @@
 package com.datecourse.support.auth.oauth2;
 
-import com.datecourse.domain.member.Member;
-import com.datecourse.repository.MemberRepository;
+import com.datecourse.storage.entity.Member;
+import com.datecourse.storage.repository.MemberRepository;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

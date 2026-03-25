@@ -1,7 +1,7 @@
 package com.datecourse.support.auth;
 
-import com.datecourse.domain.member.Member;
-import com.datecourse.repository.MemberRepository;
+import com.datecourse.storage.entity.Member;
+import com.datecourse.storage.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

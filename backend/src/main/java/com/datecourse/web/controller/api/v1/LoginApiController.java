@@ -1,11 +1,12 @@
 package com.datecourse.web.controller.api.v1;
 
-import com.datecourse.domain.member.Member;
-import com.datecourse.service.LoginService;
-import com.datecourse.service.dto.LoginForm;
+import com.datecourse.domain.MemberService;
+import com.datecourse.domain.dto.LoginForm;
+import com.datecourse.storage.entity.Member;
 import com.datecourse.support.auth.AuthService;
 import com.datecourse.support.response.ApiResponse;
 import com.datecourse.web.controller.dto.RegisterForm;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,21 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/auth")
 public class LoginApiController {
 
-    private final LoginService loginService;
+    private final MemberService memberService;
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ApiResponse<Long> signup(@RequestBody RegisterForm form, @AuthenticationPrincipal OAuth2User oAuth2User) {
+    public ApiResponse<Long> signup(@Valid @RequestBody RegisterForm form,
+                                    @AuthenticationPrincipal OAuth2User oAuth2User) {
+        Member member = memberService.saveMember(form);
         if (oAuth2User == null) {
-            Member member = loginService.saveMember(form);
             return ApiResponse.success(member.getId());
         }
 
         String providerId = oAuth2User.getAttribute("id").toString();
         form.setProviderId(providerId);
 
-        Member member = loginService.saveMember(form);
-        authService.upgradeAuth(member);
+        authService.upgradeAuth();
         return ApiResponse.success(member.getId());
     }
 
@@ -49,7 +50,7 @@ public class LoginApiController {
 
     @GetMapping("/check-id")
     public ApiResponse<Boolean> check(@RequestParam String loginId) {
-        boolean isExist = loginService.checkLoginId(loginId);
+        boolean isExist = memberService.checkLoginId(loginId);
         return ApiResponse.success(isExist);
     }
 }

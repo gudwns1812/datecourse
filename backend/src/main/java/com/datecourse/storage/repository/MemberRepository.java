@@ -1,6 +1,6 @@
-package com.datecourse.repository;
+package com.datecourse.storage.repository;
 
-import com.datecourse.domain.member.Member;
+import com.datecourse.storage.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

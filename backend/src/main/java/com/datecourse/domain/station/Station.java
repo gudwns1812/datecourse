@@ -1,28 +1,26 @@
 package com.datecourse.domain.station;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import org.locationtech.jts.geom.Point;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Station {
-    private List<String> lines;
-    private String stationName;
-    private Address address;
+    private final String line;
+    private final String stationName;
 
-    private Station(String line, String stationName, String simpleAddress) {
-        this.lines = List.of(line);
+    private final Double latitude;
+    private final Double longitude;
+
+    private Station(String line, String stationName, Double latitude, Double longitude) {
+        this.line = line;
         this.stationName = stationName;
-        this.address = Address.from(simpleAddress);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    /**
-     * Station 생성을 위한 정적 팩토리 메서드
-     */
-    public static Station of(String line, String stationName, String simpleAddress) {
-        return new Station(line, stationName, simpleAddress);
+    public static Station of(String line, String stationName, Point location) {
+        double longitude = location.getCoordinate().getX();
+        double latitude = location.getCoordinate().getY();
+        return new Station(line, stationName, latitude, longitude);
     }
 }
