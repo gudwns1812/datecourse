@@ -10,11 +10,15 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.datecourse.domain.member.Member;
-import com.datecourse.service.LoginService;
-import com.datecourse.service.dto.LoginForm;
+import com.datecourse.domain.MemberService;
+import com.datecourse.domain.dto.LoginForm;
+import com.datecourse.storage.constant.MemberGender;
+import com.datecourse.storage.entity.Member;
 import com.datecourse.support.auth.AuthService;
+import com.datecourse.support.auth.CustomAuthenticationEntryPoint;
 import com.datecourse.support.auth.MemberDetails;
+import com.datecourse.support.auth.oauth2.KakaoOAuth2UserService;
+import com.datecourse.support.auth.oauth2.OAuth2SuccessHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,13 +48,22 @@ class LoginApiControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private LoginService loginService;
+    private MemberService memberService;
 
     @MockitoBean
     private AuthService authService;
 
     @MockitoBean
     private AuthenticationManager authenticationManager;
+
+    @MockitoBean
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @MockitoBean
+    private KakaoOAuth2UserService kakaoOAuth2UserService;
+
+    @MockitoBean
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @BeforeEach
     void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -62,11 +75,12 @@ class LoginApiControllerTest {
     @Test
     void signup() throws Exception {
         //given
-        String json = "{\"username\":\"테스터\",\"loginId\":\"test\",\"password\":\"test!\",\"email\":\"test@test.com\",\"gender\":\"M\",\"phoneNumber\":\"010-1234-5678\"}";
+        String json = "{\"username\":\"테스터\",\"loginId\":\"test\",\"password\":\"test12!!!!!\",\"email\":\"test@test.com\",\"gender\":\"MALE\",\"phoneNumber\":\"010-1234-5678\", \"birth\":\"1999-09-20\"}";
 
-        Member member = Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678");
+        Member member = Member.createMember("테스터", "test", "test12!!!!!", "test@test.com", MemberGender.MALE,
+                "010-1234-5678");
         ReflectionTestUtils.setField(member, "id", 1L);
-        given(loginService.saveMember(any())).willReturn(member);
+        given(memberService.saveMember(any())).willReturn(member);
 
         //when & then
         mockMvc.perform(post("/api/v1/auth/signup")
@@ -80,7 +94,8 @@ class LoginApiControllerTest {
                                 fieldWithPath("password").description("비밀번호"),
                                 fieldWithPath("email").description("이메일 주소"),
                                 fieldWithPath("gender").description("성별 (M/F)"),
-                                fieldWithPath("phoneNumber").description("휴대폰 번호")
+                                fieldWithPath("phoneNumber").description("휴대폰 번호"),
+                                fieldWithPath("birth").description("생년월일")
                         ),
                         responseFields(
                                 fieldWithPath("result").description("결과 상태 (SUCCESS/ERROR)"),
@@ -96,7 +111,8 @@ class LoginApiControllerTest {
         LoginForm form = new LoginForm("test", "test!");
         String json = objectMapper.writeValueAsString(form);
 
-        Member member = Member.createMember("테스터", "test", "test!", "test@test.com", "M", "010-1234-5678");
+        Member member = Member.createMember("테스터", "test", "test!", "test@test.com", MemberGender.MALE,
+                "010-1234-5678");
         ReflectionTestUtils.setField(member, "id", 1L);
 
         MemberDetails userDetails = new MemberDetails(member);

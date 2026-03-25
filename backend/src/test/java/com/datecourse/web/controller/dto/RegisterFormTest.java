@@ -1,6 +1,6 @@
 package com.datecourse.web.controller.dto;
 
-import com.datecourse.domain.member.Member;
+import com.datecourse.storage.entity.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

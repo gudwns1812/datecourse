@@ -10,10 +10,15 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.datecourse.domain.member.Member;
+import com.datecourse.domain.DateCourseService;
 import com.datecourse.domain.station.Station;
-import com.datecourse.service.DateCourseService;
+import com.datecourse.storage.constant.MemberGender;
+import com.datecourse.storage.entity.Member;
+import com.datecourse.support.auth.CustomAuthenticationEntryPoint;
 import com.datecourse.support.auth.MemberDetails;
+import com.datecourse.support.auth.oauth2.KakaoOAuth2UserService;
+import com.datecourse.support.auth.oauth2.OAuth2SuccessHandler;
+import com.datecourse.support.utils.GeometryUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +44,15 @@ class RandomStationControllerTest {
     @MockitoBean
     private DateCourseService dateCourseService;
 
+    @MockitoBean
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @MockitoBean
+    private KakaoOAuth2UserService kakaoOAuth2UserService;
+
+    @MockitoBean
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
+
     private Authentication auth;
 
     @BeforeEach
@@ -48,7 +62,8 @@ class RandomStationControllerTest {
                 .apply(springSecurity())
                 .build();
 
-        Member member = Member.createMember("테스터", "test", "password", "test@test.com", "M", "010-1234-5678");
+        Member member = Member.createMember("테스터", "test", "password", "test@test.com", MemberGender.MALE,
+                "010-1234-5678");
         ReflectionTestUtils.setField(member, "id", 1L); // ID 할당
 
         MemberDetails userDetails = new MemberDetails(member);
@@ -58,7 +73,7 @@ class RandomStationControllerTest {
     @Test
     void getRandomStation() throws Exception {
         //given
-        Station station = Station.of("2호선", "강남역", "서울특별시 강남구 강남대로 396");
+        Station station = Station.of("2호선", "강남역", GeometryUtils.createPoint(127.001, 127.2123));
         given(dateCourseService.getRandomStation()).willReturn(station);
 
         //when & then
@@ -69,9 +84,10 @@ class RandomStationControllerTest {
                         responseFields(
                                 fieldWithPath("result").description("결과 상태 (SUCCESS/ERROR)"),
                                 fieldWithPath("data").description("역 정보 데이터"),
-                                fieldWithPath("data.lineNumbers").description("호선 정보 리스트"),
+                                fieldWithPath("data.line").description("호선 정보"),
                                 fieldWithPath("data.stationName").description("지하철역 이름"),
-                                fieldWithPath("data.stationAddress").description("상세 주소"),
+                                fieldWithPath("data.longitude").description("경도"),
+                                fieldWithPath("data.latitude").description("위도"),
                                 fieldWithPath("error").description("에러 발생 시 상세 정보 (또는 null)")
                         )
                 ));

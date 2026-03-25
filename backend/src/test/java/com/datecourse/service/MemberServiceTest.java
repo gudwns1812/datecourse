@@ -2,6 +2,8 @@ package com.datecourse.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.datecourse.domain.MemberService;
+import com.datecourse.storage.constant.MemberGender;
 import com.datecourse.support.error.CoreException;
 import com.datecourse.web.controller.dto.RegisterForm;
 import org.junit.jupiter.api.Test;
@@ -13,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class LoginServiceTest {
+class MemberServiceTest {
 
     @Autowired
-    LoginService service;
+    MemberService service;
 
     @Test
     void serviceDuplicateTest() {
@@ -26,7 +28,7 @@ class LoginServiceTest {
         form.setLoginId("unique_test_id");
         form.setPassword("password");
         form.setEmail("test@test.com");
-        form.setGender("M");
+        form.setGender(MemberGender.MALE);
         form.setPhoneNumber("010-1234-5678");
 
         service.saveMember(form);
