@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.datecourse.repository.MemberRepositoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-02-14T03:14:02.243Z" hostname="baghyeongjun-ui-MacBookPro.local" time="0.02">
-  <properties/>
-  <testcase name="repositoryTest()" classname="com.datecourse.repository.MemberRepositoryTest" time="0.02"/>
-  <system-out><![CDATA[2026-02-14T12:14:02.237+09:00  INFO 31021 --- [datecourse] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.datecourse.repository.MemberRepositoryTest]: MemberRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-02-14T12:14:02.241+09:00  INFO 31021 --- [datecourse] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.datecourse.DatecourseApplication for test class com.datecourse.repository.MemberRepositoryTest
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

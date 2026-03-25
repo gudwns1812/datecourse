@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.datecourse.web.controller.dto.RegisterFormTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-02-14T03:14:02.657Z" hostname="baghyeongjun-ui-MacBookPro.local" time="0.001">
-  <properties/>
-  <testcase name="registerToMember()" classname="com.datecourse.web.controller.dto.RegisterFormTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
