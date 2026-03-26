@@ -5,8 +5,9 @@ export interface SignupRequest {
   loginId: string;
   password: string;
   email: string;
-  gender: string;
+  gender: "MALE" | "FEMALE";
   phoneNumber: string;
+  birth: string; // YYYY-MM-DD
 }
 
 export interface LoginRequest {
@@ -15,7 +16,7 @@ export interface LoginRequest {
 }
 
 export interface ApiResponse<T> {
-  result: "SUCCESS" | "ERROR";
+  result: "SUCCESS" | "FAIL";
   data: T;
   error: any;
 }
