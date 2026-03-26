@@ -10,7 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "어디역? - 랜덤 데이트역 뽑기",
+  title: "dateCourse - 랜덤 데이트역 뽑기",
   description: "결정 장애 커플을 위한 최고의 해결책! 서울의 지하철역 중 랜덤으로 데이트 장소를 추천해드려요.",
 };
 

@@ -45,7 +45,7 @@ export default function LoginPage() {
             <span className="material-symbols-outlined text-3xl">login</span>
           </div>
           <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 mb-2">반가워요!</h1>
-          <p className="text-slate-500 dark:text-slate-400">어디역?에 로그인하고 데이트 장소를 추천받으세요.</p>
+          <p className="text-slate-500 dark:text-slate-400">dateCourse에 로그인하고 데이트 장소를 추천받으세요.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
