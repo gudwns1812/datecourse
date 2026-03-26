@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Member extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String nickname;

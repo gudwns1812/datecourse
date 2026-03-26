@@ -2,6 +2,7 @@ package com.datecourse.storage.entity;
 
 import com.datecourse.domain.station.Station;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import org.locationtech.jts.geom.Point;
 public class SubwayStation extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long stationId;
@@ -26,6 +27,9 @@ public class SubwayStation extends BaseTimeEntity {
     private String stationName;
     private Point location;
 
+    @Embedded
+    private BaseAddress address;
+    
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 

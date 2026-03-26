@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
@@ -14,17 +15,19 @@ public class MemberDetails implements UserDetails {
     private final String loginId;
     private final String password;
     private final String username;
+    private final UserRole role;
 
     public MemberDetails(Member member) {
         this.id = member.getId();
         this.loginId = member.getLoginId();
         this.password = member.getPassword();
         this.username = member.getUsername();
+        this.role = member.getRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // 현재 권한 체계가 없으므로 빈 리스트 반환
+        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
