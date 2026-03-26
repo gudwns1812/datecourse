@@ -13,10 +13,10 @@ public class SubwayStationReader {
 
     private final SubwayStationRepository subwayStationRepository;
 
-    public List<Station> readAll() {
-        List<SubwayStation> stations = subwayStationRepository.findAll();
+    public List<Station> readStationBy(String city, String district) {
+        List<SubwayStation> subwayStations = subwayStationRepository.findByFilter(city, district);
 
-        return stations.stream()
+        return subwayStations.stream()
                 .map(SubwayStation::toDomain)
                 .toList();
     }

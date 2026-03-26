@@ -10,7 +10,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.datecourse.domain.DateCourseService;
+import com.datecourse.domain.StationService;
 import com.datecourse.domain.station.Station;
 import com.datecourse.storage.constant.MemberGender;
 import com.datecourse.storage.entity.Member;
@@ -42,7 +42,7 @@ class RandomStationControllerTest {
     private MockMvc mockMvc;
 
     @MockitoBean
-    private DateCourseService dateCourseService;
+    private StationService stationService;
 
     @MockitoBean
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -74,7 +74,7 @@ class RandomStationControllerTest {
     void getRandomStation() throws Exception {
         //given
         Station station = Station.of("2호선", "강남역", GeometryUtils.createPoint(127.001, 127.2123));
-        given(dateCourseService.getRandomStation()).willReturn(station);
+        given(stationService.getRandomStation(null, null, null)).willReturn(station);
 
         //when & then
         mockMvc.perform(get("/api/v1/stations/random")
