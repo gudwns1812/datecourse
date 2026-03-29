@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/v1/auth/login", "/v1/auth/signup").permitAll()
+                        .requestMatchers("/", "api/v1/auth/*").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/*.ico", "/error").permitAll()
                         .anyRequest().hasRole("USER")
                 )

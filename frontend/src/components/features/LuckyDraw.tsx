@@ -1,15 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import Button from "@/components/common/Button";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LuckyDraw() {
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, authChecked } = useAuthStore();
 
   const handleStartDraw = () => {
+    if (!authChecked) {
+      router.push("/stations/random");
+      return;
+    }
+
     if (!isLoggedIn) {
       alert("로그인이 필요한 서비스입니다. 로그인 페이지로 이동합니다.");
       router.push("/login");

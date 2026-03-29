@@ -4,6 +4,7 @@ import com.datecourse.domain.MemberService;
 import com.datecourse.domain.dto.LoginForm;
 import com.datecourse.storage.entity.Member;
 import com.datecourse.support.auth.AuthService;
+import com.datecourse.support.auth.MemberDetails;
 import com.datecourse.support.response.ApiResponse;
 import com.datecourse.web.controller.dto.RegisterForm;
 import jakarta.validation.Valid;
@@ -52,5 +53,11 @@ public class LoginApiController {
     public ApiResponse<Boolean> check(@RequestParam String loginId) {
         boolean isExist = memberService.checkLoginId(loginId);
         return ApiResponse.success(isExist);
+    }
+
+    @GetMapping("/me")
+    public ApiResponse<String> me(@AuthenticationPrincipal MemberDetails member) {
+        String username = member.getUsername();
+        return ApiResponse.success(username);
     }
 }

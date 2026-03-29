@@ -12,22 +12,25 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Builder(access = AccessLevel.PRIVATE)
+@SQLDelete(sql = "update member set deleted_at now() where id = ?")
+@SQLRestriction("deleted_at is null")
 public class Member extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
     private String nickname;
@@ -44,7 +47,6 @@ public class Member extends BaseTimeEntity {
     @Column(name = "role", length = 20)
     private UserRole role;
     private String providerId;
-    private LocalDateTime deletedAt;
 
     /**
      * OAuth2 회원 가입을 위한 정적 팩토리 메서드 (providerId 포함)
