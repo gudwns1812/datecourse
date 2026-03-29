@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/common/Button";
@@ -13,9 +13,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const authChecked = useAuthStore((state) => state.authChecked);
+
+  useEffect(() => {
+    if (authChecked && isLoggedIn) {
+      router.replace("/");
+    }
+  }, [authChecked, isLoggedIn, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +38,7 @@ export default function LoginPage() {
       } else {
         setError("아이디 또는 비밀번호를 확인해주세요.");
       }
-    } catch (err) {
+    } catch {
       setError("로그인 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setIsLoading(false);
@@ -104,7 +112,7 @@ export default function LoginPage() {
           className="w-full flex items-center justify-center gap-3 bg-[#FEE500] hover:bg-[#FDE000] text-[#191919] font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98]"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fillRule="evenodd" clipRule="evenodd" d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z" fill="currentColor"/>
+            <path fillRule="evenodd" clipRule="evenodd" d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z" fill="currentColor" />
           </svg>
           카카오로 로그인하기
         </button>

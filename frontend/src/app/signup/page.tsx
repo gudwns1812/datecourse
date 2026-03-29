@@ -1,12 +1,12 @@
 "use client";
 
-import {Suspense, useEffect, useState} from "react";
-import {useRouter} from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
-import {authService} from "@/services/auth";
-
+import { authService } from "@/services/auth";
+import { useAuthStore } from "@/store/useAuthStore";
 function SignupForm() {
     const router = useRouter();
 
@@ -16,16 +16,25 @@ function SignupForm() {
         password: "",
         email: "",
         birth: "",
-        gender: "MALE",
+        gender: "MALE" as "MALE" | "FEMALE",
         phoneNumber: "",
     });
 
     const [loginType, setLoginType] = useState<string | null>(null);
 
-    // 중복 확인 상태: 'idle' (확인 전) | 'checking' (확인 중) | 'available' (사용 가능) | 'taken' (중복됨)
+    // 확인 후 처리
     const [idStatus, setIdStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+    const authChecked = useAuthStore((state) => state.authChecked);
+
+    useEffect(() => {
+        if (authChecked && isLoggedIn) {
+            router.replace("/");
+        }
+    }, [authChecked, isLoggedIn, router]);
 
     useEffect(() => {
         // 쿠키에서 loginType 읽기
@@ -42,8 +51,8 @@ function SignupForm() {
     }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const {name, value} = e.target;
-        setFormData((prev) => ({...prev, [name]: value}));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
 
         // 아이디 필드가 변경되면 중복 확인 상태 초기화
         if (name === 'loginId') {
@@ -68,7 +77,7 @@ function SignupForm() {
                 setIdStatus('idle');
                 setError("중복 확인 중 오류가 발생했습니다.");
             }
-        } catch (err) {
+        } catch {
             setIdStatus('idle');
             setError("서버와의 통신에 실패했습니다.");
         }
@@ -93,7 +102,7 @@ function SignupForm() {
             } else {
                 setError("회원가입 정보가 올바르지 않습니다.");
             }
-        } catch (err) {
+        } catch {
             setError("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
         } finally {
             setIsLoading(false);
@@ -124,10 +133,10 @@ function SignupForm() {
                         className="mb-8 flex items-center justify-center gap-2 py-2 px-4 bg-[#FEE500]/10 rounded-full border border-[#FEE500]/20 w-fit mx-auto">
                         <div className="w-5 h-5 bg-[#FEE500] rounded-full flex items-center justify-center">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
+                                xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" clipRule="evenodd"
-                                      d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z"
-                                      fill="#191919"/>
+                                    d="M12 3C6.477 3 2 6.48 2 10.8c0 2.8 1.88 5.26 4.7 6.64-.18.64-.66 2.32-.76 2.67-.12.4.12.4.26.32.1.06 1.62-1.1 2.28-1.55.5.14 1 .22 1.52.22 5.523 0 10-3.48 10-7.8S17.523 3 12 3z"
+                                    fill="#191919" />
                             </svg>
                         </div>
                         <span
@@ -294,7 +303,7 @@ export default function SignupPage() {
                 <div className="animate-pulse text-primary font-bold text-lg">페이지를 불러오는 중...</div>
             </div>
         }>
-            <SignupForm/>
+            <SignupForm />
         </Suspense>
     );
 }
