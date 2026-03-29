@@ -18,7 +18,7 @@ export interface LoginRequest {
 export interface ApiResponse<T> {
   result: "SUCCESS" | "FAIL";
   data: T;
-  error: any;
+  error: unknown;
 }
 
 export const authService = {
@@ -34,6 +34,11 @@ export const authService = {
 
   checkId: async (loginId: string) => {
     const response = await api.get<ApiResponse<boolean>>(`api/v1/auth/check-id?loginId=${loginId}`);
+    return response.data;
+  },
+
+  checkSession: async () => {
+    const response = await api.get<ApiResponse<string>>("api/v1/auth/me");
     return response.data;
   },
 };

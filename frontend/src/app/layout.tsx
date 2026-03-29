@@ -4,6 +4,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import "./globals.css";
 
+import { AuthSync } from "@/components/common/AuthSync";
+
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
@@ -28,13 +30,15 @@ export default function RootLayout({
         />
       </head>
       <body className={`${plusJakartaSans.variable} antialiased font-display`}>
-        <div className="relative min-h-screen flex flex-col overflow-x-hidden">
-          <Header />
-          <main className="flex-1 flex flex-col">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <AuthSync>
+          <div className="relative min-h-screen flex flex-col overflow-x-hidden">
+            <Header />
+            <main className="flex-1 flex flex-col">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AuthSync>
       </body>
     </html>
   );
