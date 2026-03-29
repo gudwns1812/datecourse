@@ -74,7 +74,7 @@ class RandomStationControllerTest {
     void getRandomStation() throws Exception {
         //given
         Station station = Station.of("2호선", "강남역", GeometryUtils.createPoint(127.001, 127.2123));
-        given(stationService.getRandomStation(null, null, null)).willReturn(station);
+        given(stationService.getRandomStation(null, null)).willReturn(station);
 
         //when & then
         mockMvc.perform(get("/api/v1/stations/random")
