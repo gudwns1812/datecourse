@@ -7,9 +7,9 @@ import Button from "@/components/common/Button";
 import Badge from "@/components/common/Badge";
 import StationCard from "@/components/features/StationCard";
 import StationFilterPanel from "@/components/features/StationFilterPanel";
+import KakaoStationMap from "@/components/features/KakaoStationMap";
 import { StationData, StationFilter, stationService } from "@/services/station";
 import { useAuthStore } from "@/store/useAuthStore";
-import api from "@/services/api";
 
 type PageState = "idle" | "fetching" | "spinning" | "result";
 
@@ -20,13 +20,13 @@ export default function RandomStationPage() {
   const [currentFilter, setCurrentFilter] = useState<StationFilter>({});
 
   const router = useRouter();
-  const { isLoggedIn } = useAuthStore();
+  const { isLoggedIn, authChecked } = useAuthStore();
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/login");
+    if (authChecked && !isLoggedIn) {
+      router.replace("/login");
     }
-  }, [isLoggedIn, router]);
+  }, [authChecked, isLoggedIn, router]);
 
   const handleDraw = async (filter: StationFilter) => {
     setCurrentFilter(filter);
@@ -47,8 +47,9 @@ export default function RandomStationPage() {
         setError(response.error || "역 정보를 불러오는 데 실패했습니다.");
         setPageState("idle");
       }
-    } catch (err: any) {
-      if (err.response?.status === 404) {
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } }).response?.status;
+      if (status === 404) {
         setError("선택한 조건에 맞는 역이 없습니다.");
       } else {
         setError("서버와 통신 중 오류가 발생했습니다.");
@@ -66,6 +67,30 @@ export default function RandomStationPage() {
     setStation(null);
     setError(null);
   };
+
+  const handleViewOnMapPage = () => {
+    if (!station) return;
+
+    const params = new URLSearchParams({
+      name: station.stationName,
+      line: station.line,
+      lat: String(station.latitude),
+      lng: String(station.longitude),
+    });
+
+    router.push(`/stations/map?${params.toString()}`);
+  };
+
+  if (!authChecked) {
+    return (
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="flex flex-col items-center gap-3 text-slate-500">
+          <span className="material-symbols-outlined text-4xl animate-spin text-primary">refresh</span>
+          <p className="font-semibold">로그인 상태를 확인하고 있어요...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isLoggedIn) return null;
 
@@ -109,77 +134,59 @@ export default function RandomStationPage() {
 
             {(pageState === "spinning" || pageState === "result") && (
               <motion.div
-                key="wheel"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                key="station-result"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
                 className="flex flex-col items-center text-center w-full"
               >
-                <div className="relative group mb-12">
-                  <div className="absolute -inset-8 bg-gradient-to-r from-primary/30 to-pink-500/30 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+                <div className="w-full rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/85 dark:bg-slate-900/60 shadow-sm p-8 md:p-10">
+                  {pageState === "spinning" && (
+                    <div className="py-10 flex flex-col items-center">
+                      <span className="material-symbols-outlined text-[56px] text-primary animate-spin mb-4">
+                        refresh
+                      </span>
+                      <p className="text-slate-500 font-semibold">역을 찾고 있어요...</p>
+                    </div>
+                  )}
 
-                  <div className="relative flex flex-col items-center">
-                    <div className="w-64 h-64 md:w-80 md:h-80 rounded-full border-8 border-white dark:border-slate-800 shadow-2xl bg-white dark:bg-slate-900 flex items-center justify-center overflow-hidden relative">
+                  {pageState === "result" && station && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="flex flex-wrap justify-center gap-2 mb-4">
+                        <Badge variant="subway" lineColor="#ee2b8c">
+                          {station.line}
+                        </Badge>
+                      </div>
+                      <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-slate-100 mb-8 tracking-tight">
+                        {station.stationName} 역
+                      </h1>
 
-                      <motion.div
-                        className="absolute inset-0 opacity-10 flex items-center justify-center"
-                        animate={pageState === "spinning" ? { rotate: 360 * 5 } : { rotate: 45 }}
-                        transition={pageState === "spinning" ? { duration: 2, ease: "easeInOut" } : { duration: 0 }}
-                      >
-                        <span className="material-symbols-outlined text-[200px] text-primary">
-                          refresh
-                        </span>
-                      </motion.div>
-
-                      <div className="text-center p-8 z-10">
-                        <span className="material-symbols-outlined text-6xl text-primary mb-4 block">
-                          {pageState === "spinning" ? "pending" : "location_on"}
-                        </span>
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={pageState === "spinning" ? "spinning" : (station?.stationName || "error")}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className="h-10 flex items-center justify-center"
-                          >
-                            <span className={`text-2xl font-extrabold ${station ? 'text-slate-900 dark:text-slate-100' : 'text-slate-400'}`}>
-                              {pageState === "spinning" ? "???" : (station?.stationName || "오류")} 역
-                            </span>
-                          </motion.div>
-                        </AnimatePresence>
+                      <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+                        <Button onClick={handleRedraw} icon="refresh">
+                          다시 뽑기
+                        </Button>
+                        <Button onClick={handleViewOnMapPage} icon="map">
+                          지도에서 보기
+                        </Button>
+                        <Button variant="outline" onClick={handleChangeFilter} icon="tune">
+                          필터 변경
+                        </Button>
                       </div>
 
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-8 bg-primary rounded-b-full"></div>
-                    </div>
-                  </div>
+                      <div className="w-full max-w-5xl mt-10">
+                        <KakaoStationMap
+                          stationName={station.stationName}
+                          latitude={station.latitude}
+                          longitude={station.longitude}
+                          mapClassName="h-[420px] md:h-[580px]"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
                 </div>
-
-                {pageState === "result" && station && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center"
-                  >
-                    <div className="flex flex-wrap justify-center gap-2 mb-4">
-                      {/* Using the line styling badge (since API gives line name) */}
-                      <Badge variant="subway" lineColor="#ee2b8c">
-                        {station.line}
-                      </Badge>
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-slate-100 mb-8 tracking-tight">
-                      {station.stationName}
-                    </h1>
-
-                    <div className="flex gap-4">
-                      <Button onClick={handleRedraw} icon="refresh">
-                        다시 뽑기
-                      </Button>
-                      <Button variant="outline" onClick={handleChangeFilter} icon="tune">
-                        필터 변경
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
               </motion.div>
             )}
           </AnimatePresence>
