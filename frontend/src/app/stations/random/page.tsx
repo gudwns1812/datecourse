@@ -13,6 +13,21 @@ import { useAuthStore } from "@/store/useAuthStore";
 
 type PageState = "idle" | "fetching" | "spinning" | "result";
 
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (typeof error === "string" && error.trim().length > 0) {
+    return error;
+  }
+
+  if (error && typeof error === "object" && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string" && message.trim().length > 0) {
+      return message;
+    }
+  }
+
+  return fallback;
+};
+
 export default function RandomStationPage() {
   const [pageState, setPageState] = useState<PageState>("idle");
   const [station, setStation] = useState<StationData | null>(null);
@@ -44,7 +59,7 @@ export default function RandomStationPage() {
           setPageState("result");
         }, 2000);
       } else {
-        setError(response.error || "역 정보를 불러오는 데 실패했습니다.");
+        setError(getErrorMessage(response.error, "역 정보를 불러오는 데 실패했습니다."));
         setPageState("idle");
       }
     } catch (err: unknown) {
