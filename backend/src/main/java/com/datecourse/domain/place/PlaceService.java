@@ -9,15 +9,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PlaceService {
 
-    private final PlaceSearchCommandProcessor placeSearchCommandProcessor;
     private final PlaceSearchReader placeSearchReader;
+    private final PlaceSearchFilterProcessor placeSearchFilterProcessor;
     private final PlaceSearchResultProcessor placeSearchResultProcessor;
 
     public List<PlaceSearchResult> getPlaces(PlaceSearchCommand command) {
-        PlaceSearchCriteria criteria = placeSearchCommandProcessor.process(command);
+        List<Place> candidates = placeSearchReader.read(command);
+        List<Place> filteredPlaces = placeSearchFilterProcessor.process(candidates, command);
 
-        List<Place> candidates = placeSearchReader.read(criteria);
-
-        return placeSearchResultProcessor.process(candidates, criteria);
+        return placeSearchResultProcessor.process(filteredPlaces, command);
     }
 }

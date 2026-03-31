@@ -22,11 +22,8 @@ public class PlaceRecommendationScoreProcessor {
         if (containsIgnoreCase(place.getName(), query)) {
             score += 100d;
         }
-        if (containsIgnoreCase(place.getDescription(), query)) {
-            score += 40d;
-        }
-        if (place.getTagNames().stream().anyMatch(tag -> containsIgnoreCase(tag, query))) {
-            score += 70d;
+        if (containsIgnoreCase(place.getCategory(), query)) {
+            score += 60d;
         }
         return score;
     }

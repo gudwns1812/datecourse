@@ -11,7 +11,7 @@ public class PlaceSearchResultFactory {
     private final PlaceDistanceProcessor placeDistanceProcessor;
     private final PlaceRecommendationScoreProcessor placeRecommendationScoreProcessor;
 
-    public PlaceSearchResult create(Place place, PlaceSearchCriteria criteria) {
+    public PlaceSearchResult create(Place place, PlaceSearchCommand command) {
         Double latitude = place.getLatitude();
         Double longitude = place.getLongitude();
         if (latitude == null || longitude == null) {
@@ -19,16 +19,16 @@ public class PlaceSearchResultFactory {
         }
 
         double distanceMeters = placeDistanceProcessor.calculate(
-                criteria.latitude(),
-                criteria.longitude(),
+                command.latitude(),
+                command.longitude(),
                 latitude,
                 longitude
         );
         double recommendationScore = placeRecommendationScoreProcessor.calculate(
                 place,
-                criteria.query(),
+                command.query(),
                 distanceMeters,
-                criteria.radiusMeters()
+                command.radiusMeters()
         );
 
         return new PlaceSearchResult(

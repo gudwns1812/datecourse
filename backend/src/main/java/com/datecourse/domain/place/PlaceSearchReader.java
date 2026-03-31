@@ -12,13 +12,11 @@ public class PlaceSearchReader {
 
     private final PlaceRepository placeRepository;
 
-    public List<Place> read(PlaceSearchCriteria criteria) {
+    public List<Place> read(PlaceSearchCommand command) {
         return placeRepository.findCandidates(
-                criteria.latitude(),
-                criteria.longitude(),
-                criteria.radiusMeters(),
-                criteria.query(),
-                criteria.category()
+                command.latitude(),
+                command.longitude(),
+                command.radiusMeters()
         );
     }
 }

@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface PlaceRepositoryCustom {
 
-    List<Place> findCandidates(double latitude, double longitude, double radiusMeters, String query, String category);
+    List<Place> findCandidates(double latitude, double longitude, double radiusMeters);
 }

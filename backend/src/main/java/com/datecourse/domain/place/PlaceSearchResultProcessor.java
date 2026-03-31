@@ -13,13 +13,13 @@ public class PlaceSearchResultProcessor {
 
     private final PlaceSearchResultFactory placeSearchResultFactory;
 
-    public List<PlaceSearchResult> process(List<Place> places, PlaceSearchCriteria criteria) {
+    public List<PlaceSearchResult> process(List<Place> places, PlaceSearchCommand command) {
         return places.stream()
-                .map(place -> placeSearchResultFactory.create(place, criteria))
+                .map(place -> placeSearchResultFactory.create(place, command))
                 .filter(Objects::nonNull)
-                .filter(result -> result.distanceMeters() <= criteria.radiusMeters())
+                .filter(result -> result.distanceMeters() <= command.radiusMeters())
                 .sorted(byRecommendation())
-                .limit(criteria.size())
+                .limit(command.size())
                 .toList();
     }
 
