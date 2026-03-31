@@ -15,6 +15,13 @@ export interface PlaceData {
   tags: string[];
 }
 
+export interface PlaceSearchBounds {
+  southWestLat: number;
+  southWestLng: number;
+  northEastLat: number;
+  northEastLng: number;
+}
+
 export interface PlaceSearchParams {
   latitude: number;
   longitude: number;
@@ -22,6 +29,10 @@ export interface PlaceSearchParams {
   category?: PlaceCategoryValue;
   radius?: number;
   size?: number;
+  southWestLat?: number;
+  southWestLng?: number;
+  northEastLat?: number;
+  northEastLng?: number;
 }
 
 export interface PlaceSearchResult {
@@ -138,6 +149,10 @@ export const placeService = {
         category: params.category,
         radius: params.radius,
         size: params.size,
+        southWestLat: params.southWestLat,
+        southWestLng: params.southWestLng,
+        northEastLat: params.northEastLat,
+        northEastLng: params.northEastLng,
       },
       signal,
     });

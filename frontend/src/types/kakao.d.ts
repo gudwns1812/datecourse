@@ -4,6 +4,8 @@ declare global {
   interface KakaoLatLng {
     readonly lat?: number;
     readonly lng?: number;
+    getLat(): number;
+    getLng(): number;
   }
 
   interface KakaoPoint {
@@ -22,6 +24,8 @@ declare global {
 
   interface KakaoBounds {
     extend(latLng: KakaoLatLng): void;
+    getSouthWest(): KakaoLatLng;
+    getNorthEast(): KakaoLatLng;
   }
 
   interface KakaoMarker {
@@ -33,10 +37,12 @@ declare global {
     setLevel(level: number): void;
     setBounds(bounds: KakaoBounds): void;
     panTo(latLng: KakaoLatLng): void;
+    getBounds(): KakaoBounds;
   }
 
   interface KakaoEventNamespace {
-    addListener(target: KakaoMarker, eventName: string, handler: () => void): void;
+    addListener(target: KakaoMapInstance | KakaoMarker, eventName: string, handler: () => void): void;
+    removeListener(target: KakaoMapInstance | KakaoMarker, eventName: string, handler: () => void): void;
   }
 
   interface KakaoMapsNamespace {

@@ -3,7 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 
 import { getPlaceCategoryMeta } from "@/data/placeCategories";
-import { PlaceData } from "@/services/place";
+import { PlaceData, PlaceSearchBounds } from "@/services/place";
+
+const extractBounds = (map: KakaoMapInstance): PlaceSearchBounds => {
+  const bounds = map.getBounds();
+  const southWest = bounds.getSouthWest();
+  const northEast = bounds.getNorthEast();
+
+  return {
+    southWestLat: southWest.getLat(),
+    southWestLng: southWest.getLng(),
+    northEastLat: northEast.getLat(),
+    northEastLng: northEast.getLng(),
+  };
+};
 
 interface KakaoStationMapProps {
   stationName: string;
@@ -17,6 +30,11 @@ interface KakaoStationMapProps {
   recenterLabel?: string;
   onPlaceSelect?: (placeId: string) => void;
   onRecenter?: () => void;
+  onBoundsChange?: (bounds: PlaceSearchBounds) => void;
+  onViewportInteract?: () => void;
+  searchPending?: boolean;
+  searchInAreaLoading?: boolean;
+  onSearchInArea?: () => void;
 }
 
 let kakaoScriptPromise: Promise<void> | null = null;
@@ -96,6 +114,11 @@ export default function KakaoStationMap({
   recenterLabel = "기준 위치로 이동",
   onPlaceSelect,
   onRecenter,
+  onBoundsChange,
+  onViewportInteract,
+  searchPending = false,
+  searchInAreaLoading = false,
+  onSearchInArea,
 }: KakaoStationMapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<KakaoMapInstance | null>(null);
@@ -136,6 +159,7 @@ export default function KakaoStationMap({
 
           if (mapInstanceRef.current) {
             mapInstanceRef.current.setCenter(center);
+            mapInstanceRef.current.setLevel(4);
             return;
           }
 
@@ -158,6 +182,45 @@ export default function KakaoStationMap({
       isCancelled = true;
     };
   }, [appKey, latitude, longitude, validationError]);
+
+  useEffect(() => {
+    const maps = window.kakao?.maps;
+    const map = mapInstanceRef.current;
+    if (!mapReady || !map || !maps || !onViewportInteract) {
+      return;
+    }
+
+    const handleViewportInteract = () => {
+      onViewportInteract();
+    };
+
+    maps.event.addListener(map, "dragstart", handleViewportInteract);
+    maps.event.addListener(map, "zoom_start", handleViewportInteract);
+
+    return () => {
+      maps.event.removeListener(map, "dragstart", handleViewportInteract);
+      maps.event.removeListener(map, "zoom_start", handleViewportInteract);
+    };
+  }, [mapReady, onViewportInteract]);
+
+  useEffect(() => {
+    const maps = window.kakao?.maps;
+    const map = mapInstanceRef.current;
+    if (!mapReady || !map || !maps || !onBoundsChange) {
+      return;
+    }
+
+    const handleIdle = () => {
+      onBoundsChange(extractBounds(map));
+    };
+
+    maps.event.addListener(map, "idle", handleIdle);
+    handleIdle();
+
+    return () => {
+      maps.event.removeListener(map, "idle", handleIdle);
+    };
+  }, [latitude, longitude, mapReady, onBoundsChange]);
 
   useEffect(() => {
     const maps = window.kakao?.maps;
@@ -199,12 +262,6 @@ export default function KakaoStationMap({
     if (focusSelectedPlace && selectedPlace) {
       const selectedPosition = new maps.LatLng(selectedPlace.latitude, selectedPlace.longitude);
       map.panTo(selectedPosition);
-    } else if (places.length > 0) {
-      map.setCenter(basePosition);
-      map.setLevel(4);
-    } else {
-      map.setCenter(basePosition);
-      map.setLevel(4);
     }
 
     return () => {
@@ -233,6 +290,20 @@ export default function KakaoStationMap({
             className={`${mapClassName} w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700`}
           />
 
+          {searchPending && onSearchInArea ? (
+            <button
+              type="button"
+              onClick={onSearchInArea}
+              disabled={searchInAreaLoading}
+              className="absolute left-1/2 top-4 z-10 inline-flex -translate-x-1/2 items-center gap-2 rounded-full border border-primary/20 bg-white/95 px-4 py-2 text-sm font-bold text-slate-800 shadow-[0_12px_24px_rgba(15,23,42,0.18)] backdrop-blur transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-700 dark:bg-slate-950/90 dark:text-slate-100"
+            >
+              <span className="material-symbols-outlined text-[18px]">
+                {searchInAreaLoading ? "progress_activity" : "travel_explore"}
+              </span>
+              {searchInAreaLoading ? "검색 중..." : "이 영역에서 검색"}
+            </button>
+          ) : null}
+
           <button
             type="button"
             onClick={() => {
@@ -242,6 +313,7 @@ export default function KakaoStationMap({
               if (maps && map) {
                 map.panTo(new maps.LatLng(latitude, longitude));
                 map.setLevel(4);
+                onBoundsChange?.(extractBounds(map));
               }
 
               onRecenter?.();
