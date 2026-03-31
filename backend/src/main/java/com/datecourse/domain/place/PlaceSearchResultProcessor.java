@@ -19,7 +19,7 @@ public class PlaceSearchResultProcessor {
                 .filter(Objects::nonNull)
                 .filter(result -> result.distanceMeters() <= command.radiusMeters())
                 .sorted(byRecommendation())
-                .limit(command.size())
+                .limit(command.limitedSize())
                 .toList();
     }
 

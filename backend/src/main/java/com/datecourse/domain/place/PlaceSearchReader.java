@@ -13,6 +13,10 @@ public class PlaceSearchReader {
     private final PlaceRepository placeRepository;
 
     public List<Place> read(PlaceSearchCommand command) {
+        if (command.usesBounds()) {
+            return placeRepository.findCandidatesWithinBounds(command.bounds());
+        }
+
         return placeRepository.findCandidates(
                 command.latitude(),
                 command.longitude(),
