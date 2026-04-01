@@ -172,28 +172,3 @@ cd frontend && npm run build
 | `spring.security.oauth2.client.*` | 카카오 OAuth2 설정            |
 | `app.frontend.base-url`           | OAuth 성공 후 리다이렉트될 프론트 주소 |
 | `app.frontend.signup`             | 게스트 사용자의 추가 정보 입력 경로     |
-
-### 운영 스크립트
-
-`place_tag_backfill.py`는 아래 값을 사용합니다.
-
-- DB 접속: `DATABASE_URL`, `POSTGRES_DSN`, `DB_URL`
-- 카카오 API 키: `KAKAO_REST_API_KEY`, `KAKAO_API_KEY`
-
-## 테스트와 문서 산출물
-
-- 백엔드 테스트는 JUnit 5, AssertJ, Spring REST Docs, Testcontainers를 사용합니다.
-- 프론트엔드는 현재 ESLint와 Next build 기반 검증이 중심입니다.
-- 백엔드 빌드 후 API 문서 산출물은 `api/backend-api/`에 복사됩니다.
-
-## 문서 정리 원칙
-
-현재 저장소에는 실제 운영 문서와 과거 작업 산출물이 혼재할 수 있습니다.
-이번 정리 이후에는 아래 성격의 문서를 우선 유지합니다.
-
-- 현재 코드와 직접 연결되는 규약 문서
-- 운영 스크립트 사용 가이드
-- 실제 API/디자인 기준 문서
-- 진행 중이거나 재사용 가치가 있는 계획 문서
-
-반대로 완료된 체크리스트, 부트스트랩 기본 README, 일회성 분석 메모는 정리 대상입니다.
